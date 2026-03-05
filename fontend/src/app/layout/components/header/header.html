@@ -1,0 +1,27 @@
+<header class="top-navbar border-bottom px-4 d-flex align-items-center justify-content-between">
+  <div class="d-flex align-items-center">
+    <button class="btn-toggle me-3" (click)="toggleSidebar()">
+      <i class="fa-solid fa-bars-staggered"></i>
+    </button>
+    <nav aria-label="breadcrumb" class="d-none d-md-block">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Applicant Portal</a></li>
+        <li class="breadcrumb-item active" aria-current="page">บันทึกข้อมูล</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="top-actions d-flex align-items-center gap-3">
+    <div class="quota-info d-none d-lg-block">
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2 fw-medium text-muted">
+         <i class="fa-solid fa-bolt text-amber-500 me-1"></i> AI Usage: 12/50
+      </span>
+    </div>
+    <button class="btn-icon position-relative border-0 bg-transparent text-secondary p-2 rounded-circle hover-bg-light transition-all">
+      <i class="fa-solid fa-bell fs-5"></i>
+      <span class="position-absolute top-25 start-75 translate-middle p-1 bg-danger border border-light rounded-circle">
+        <span class="visually-hidden">New alerts</span>
+      </span>
+    </button>
+  </div>
+</header>

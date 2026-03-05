@@ -1,0 +1,39 @@
+.top-navbar {
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease;
+}
+
+.btn-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.hover-bg-light:hover {
+  background-color: #f8fafc !important;
+}
+
+.top-25 {
+  top: 25%;
+}
+
+.start-75 {
+  left: 75%;
+}

@@ -1,0 +1,176 @@
+<div class="container-fluid p-4 animate-in">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h3 class="fw-bold mb-1 text-dark">ข้อมูลหน่วยงาน (Organization Profile)</h3>
+      <p class="text-muted mb-0">จัดการรายละเอียดบริษัท ข้อมูลการติดต่อ และโลโก้ขององค์กร</p>
+    </div>
+    
+    <div>
+      <button *ngIf="!isEditing" class="btn btn-outline-dark-navy px-4 py-2" (click)="toggleEdit()">
+        <i class="fa-solid fa-pen me-2"></i> แก้ไขข้อมูล
+      </button>
+      <div *ngIf="isEditing" class="d-flex gap-2">
+        <button class="btn btn-light px-4 py-2 text-muted fw-bold" (click)="toggleEdit()">ยกเลิก</button>
+        <button class="btn btn-primary px-4 py-2 shadow-sm fw-bold" (click)="saveProfile()">
+          <i class="fa-solid fa-floppy-disk me-2"></i> บันทึก
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left Profile Card -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden">
+        <div class="bg-primary position-absolute top-0 start-0 w-100" style="height: 120px; z-index: 1;"></div>
+        
+        <div class="card-body p-4 text-center d-flex flex-column align-items-center" style="z-index: 2; margin-top: 50px;">
+          
+          <div class="org-logo-wrapper mb-3 position-relative">
+            <div class="org-logo bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center border" style="width: 120px; height: 120px;">
+              <i class="fa-regular fa-building text-primary display-3"></i>
+            </div>
+            <button *ngIf="isEditing" 
+                    class="btn btn-sm btn-dark rounded-circle position-absolute bottom-0 end-0 shadow" 
+                    style="width: 32px; height: 32px;"
+                    (click)="onLogoUpload()">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          
+          <h4 class="fw-bold text-dark mb-1">{{ orgForm.get('name')?.value }}</h4>
+          <p class="text-muted small mb-4">องค์กรประเภท: <span class="badge bg-light text-dark border ms-1">เอกชน (ขนาดกลาง)</span></p>
+          
+          <div class="w-100 px-3 py-3 bg-light-subtle rounded-3 text-start mt-auto">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fa-solid fa-check-circle text-success me-2"></i>
+              <span class="small fw-semibold text-dark">สถานะยืนยันตัวตนแล้ว</span>
+            </div>
+            <div class="text-muted" style="font-size: 0.75rem;">บัญชีถูกสร้างเมื่อ: 1 มกราคม 2567</div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Profile Form -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-5" [formGroup]="orgForm">
+          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4">ข้อมูลทั่วไป</h5>
+          
+          <div class="row g-4">
+            <div class="col-md-12">
+              <label class="form-label small fw-bold text-muted">ชื่อองค์กร / บริษัท</label>
+              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="name">
+              <div *ngIf="orgForm.get('name')?.invalid && orgForm.get('name')?.touched" class="text-danger small mt-1">
+                กรุณาระบุชื่อองค์กร (อย่างน้อย 5 ตัวอักษร)
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">เลขประจำตัวผู้เสียภาษี (13 หลัก)</label>
+              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="taxId">
+              <div *ngIf="orgForm.get('taxId')?.invalid && orgForm.get('taxId')?.touched" class="text-danger small mt-1">
+                กรุณาระบุเลขประจำตัวผู้เสียภาษี 13 หลักให้ถูกต้อง
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">ประเภทองค์กร</label>
+              <select class="form-select bg-light-subtle border-0 py-2 custom-input" formControlName="type">
+                <option value="บริษัทจำกัด">บริษัทจำกัด</option>
+                <option value="หน่วยงานรัฐบาล">หน่วยงานรัฐบาล</option>
+                <option value="รัฐวิสาหกิจ">รัฐวิสาหกิจ</option>
+                <option value="องค์กรไม่แสวงหากำไร">องค์กรไม่แสวงหากำไร</option>
+              </select>
+              <div *ngIf="orgForm.get('type')?.invalid && orgForm.get('type')?.touched" class="text-danger small mt-1">
+                กรุณาเลือกประเภทองค์กร
+              </div>
+            </div>
+            
+            <div class="col-md-12">
+              <label class="form-label small fw-bold text-muted">ที่อยู่องค์กร</label>
+              <textarea class="form-control bg-light-subtle border-0 py-2 custom-input" rows="3" formControlName="address"></textarea>
+              <div *ngIf="orgForm.get('address')?.invalid && orgForm.get('address')?.touched" class="text-danger small mt-1">
+                กรุณาระบุที่อยู่องค์กร
+              </div>
+            </div>
+          </div>
+          
+          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 mt-5">ข้อมูลการติดต่อ</h5>
+          
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">ชื่อผู้ติดต่อหลัก</label>
+              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="contactPerson">
+              <div *ngIf="orgForm.get('contactPerson')?.invalid && orgForm.get('contactPerson')?.touched" class="text-danger small mt-1">
+                กรุณาระบุชื่อผู้ติดต่อหลัก
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">เบอร์โทรศัพท์</label>
+              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="phone">
+              <div *ngIf="orgForm.get('phone')?.invalid && orgForm.get('phone')?.touched" class="text-danger small mt-1">
+                กรุณาระบุเบอร์โทรศัพท์
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">อีเมล (Email)</label>
+              <input type="email" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="email">
+              <div *ngIf="orgForm.get('email')?.invalid && orgForm.get('email')?.touched" class="text-danger small mt-1">
+                กรุณาระบุอีเมลให้ถูกต้อง
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted">เว็บไซต์ (ถ้ามี)</label>
+              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="website">
+            </div>
+          </div>
+          
+          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 mt-5">ข้อมูลองค์กรด้านสิ่งแวดล้อม</h5>
+          
+          <div class="row g-4">
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">จำนวนพนักงาน (คน)</label>
+              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="numberOfEmployees">
+              <div *ngIf="orgForm.get('numberOfEmployees')?.invalid && orgForm.get('numberOfEmployees')?.touched" class="text-danger small mt-1">
+                กรุณาระบุจำนวนพนักงาน
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">พื้นที่ใช้สอยรวม (ตร.ม.)</label>
+              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="totalFloorArea">
+              <div *ngIf="orgForm.get('totalFloorArea')?.invalid && orgForm.get('totalFloorArea')?.touched" class="text-danger small mt-1">
+                กรุณาระบุพื้นที่ใช้สอย
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">ชั่วโมงทำงาน (ชั่วโมง/ปี)</label>
+              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="workingHoursPerYear">
+              <div *ngIf="orgForm.get('workingHoursPerYear')?.invalid && orgForm.get('workingHoursPerYear')?.touched" class="text-danger small mt-1">
+                กรุณาระบุชั่วโมงทำงาน
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">ปีฐานในการประเมิน (พ.ศ.)</label>
+              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="baseYear">
+              <div *ngIf="orgForm.get('baseYear')?.invalid && orgForm.get('baseYear')?.touched" class="text-danger small mt-1">
+                กรุณาระบุปีฐาน
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-muted">เป้าหมายลดคาร์บอน (%)</label>
+              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="targetReductionPercent">
+              <div *ngIf="orgForm.get('targetReductionPercent')?.invalid && orgForm.get('targetReductionPercent')?.touched" class="text-danger small mt-1">
+                กรุณาระบุเป้าหมายการลดก๊าซเรือนกระจก
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

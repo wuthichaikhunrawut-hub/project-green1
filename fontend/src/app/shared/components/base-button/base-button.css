@@ -1,0 +1,121 @@
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.btn-base:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-base:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-base:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 8px;
+}
+
+.btn-md {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+}
+
+.btn-lg {
+  padding: 0.875rem 1.5rem;
+  font-size: 1.125rem;
+  border-radius: 16px;
+}
+
+/* Colors - Tailwind inspired Theme */
+.btn-primary {
+  background-color: #0ea5e9; /* Sky 500 */
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0284c7; /* Sky 600 */
+}
+
+.btn-success {
+  background-color: #10b981; /* Emerald 500 */
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #059669; /* Emerald 600 */
+}
+
+.btn-danger {
+  background-color: #ef4444; /* Red 500 */
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #dc2626; /* Red 600 */
+}
+
+.btn-secondary {
+  background-color: #f1f5f9; /* Slate 100 */
+  color: #334155; /* Slate 700 */
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #e2e8f0; /* Slate 200 */
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #64748b; /* Slate 500 */
+  border: 1px solid #cbd5e1; /* Slate 300 */
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: #f8fafc; /* Slate 50 */
+  color: #0f172a; /* Slate 900 */
+  border-color: #94a3b8; /* Slate 400 */
+}
+
+/* Utilities */
+.w-100 {
+  width: 100%;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.btn-spinner {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+.is-loading {
+  pointer-events: none;
+}
+
+.opacity-0 {
+  opacity: 0;
+}

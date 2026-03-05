@@ -1,0 +1,161 @@
+<div class="container-fluid p-4 animate-in">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h3 class="fw-bold mb-1 text-primary"><i class="fa-solid fa-file-invoice me-2"></i> จัดการไฟล์อ้างอิง (Evidence Files)</h3>
+      <p class="text-muted mb-0">อัปโหลดและจัดการเอกสารหลักฐานสำหรับการประเมิน Green Office</p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left: Upload Area -->
+    <div class="col-lg-5">
+      <div class="card stat-card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-header bg-white border-bottom p-4">
+          <h5 class="fw-bold mb-0 text-dark">
+            <i class="fa-solid fa-cloud-arrow-up text-primary me-2"></i>อัปโหลดเอกสารใหม่
+          </h5>
+        </div>
+        <div class="card-body p-4 d-flex flex-column text-center">
+          
+          <div class="upload-zone flex-grow-1 d-flex flex-column justify-content-center align-items-center rounded-4 border-2 border-dashed p-5 transition-all bg-light"
+               [class.border-primary]="isDragging"
+               [class.bg-white]="isDragging"
+               (dragover)="onDragOver($event)"
+               (dragleave)="onDragLeave($event)"
+               (drop)="onDrop($event)"
+               (click)="triggerFileInput()"
+               style="cursor: pointer;">
+            
+            <input type="file" id="fileInput" hidden multiple (change)="onFileSelect($event)">
+            
+            <div class="icon-circle bg-white shadow-sm text-primary rounded-circle mb-3 d-flex align-items-center justify-content-center mx-auto" style="width: 80px; height: 80px;">
+              <i class="fa-solid fa-upload display-6"></i>
+            </div>
+            
+            <h5 class="fw-bold text-dark mb-2">ลากไฟล์มาวางที่นี่</h5>
+            <p class="text-muted small mb-4">หรือคลิกเพื่อเลือกไฟล์จากเครื่อง (PDF, JPG, PNG, DOCX)</p>
+            
+            <!-- Category Selection before upload -->
+            <div class="w-100 text-start mt-auto pt-3 border-top" (click)="$event.stopPropagation()">
+              <label class="form-label small fw-bold text-dark">เลือกหมวดหมู่ที่ต้องการอัปโหลด <span class="text-danger">*</span></label>
+              <select class="form-select bg-white shadow-sm" [(ngModel)]="selectedCategory">
+                <option value="" disabled selected>ระบุหมวดหมู่...</option>
+                <option value="หมวดที่ 1">หมวดที่ 1 การกำหนดนโยบาย</option>
+                <option value="หมวดที่ 2">หมวดที่ 2 การสื่อสารฯ</option>
+                <option value="หมวดที่ 3">หมวดที่ 3 การใช้ทรัพยากรฯ</option>
+                <option value="หมวดที่ 4">หมวดที่ 4 การจัดการของเสีย</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: File List -->
+    <div class="col-lg-7">
+      <div class="card stat-card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-folder-open text-primary me-2"></i>รายการไฟล์ที่อัปโหลด</h5>
+          
+          <div class="input-group" style="width: 250px;">
+            <span class="input-group-text bg-light border-0 text-muted">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" 
+                   class="form-control bg-light border-0 shadow-none" 
+                   placeholder="ค้นหาชื่อไฟล์..."
+                   [(ngModel)]="searchTerm">
+          </div>
+        </div>
+        
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="bg-light text-muted text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                <tr>
+                  <th class="ps-4 border-0 fw-bold py-3">ชื่อไฟล์</th>
+                  <th class="border-0 fw-bold py-3">หมวดหมู่</th>
+                  <th class="border-0 fw-bold py-3">สถานะ</th>
+                  <th class="pe-4 border-0 text-end py-3">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody class="border-top-0">
+                <tr *ngFor="let file of filteredFiles">
+                  <td class="ps-4 py-3">
+                    <div class="d-flex align-items-center">
+                      <div class="file-icon bg-white border shadow-sm rounded-3 me-3 text-center d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                        <i *ngIf="file.name.includes('.pdf')" class="fa-solid fa-file-pdf text-danger fs-5"></i>
+                        <i *ngIf="file.name.includes('.jpg')" class="fa-solid fa-file-image text-primary fs-5"></i>
+                        <i *ngIf="file.name.includes('.docx')" class="fa-solid fa-file-word text-info fs-5"></i>
+                      </div>
+                      <div>
+                        <div class="fw-bold text-dark small text-truncate" style="max-width: 200px;">{{ file.name }}</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">{{ file.size }} • {{ file.uploadDate }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3">
+                    <span class="badge bg-light text-dark border fw-medium px-2 py-1">{{ file.category }}</span>
+                  </td>
+                  <td class="py-3">
+                    <span *ngIf="file.status === 'approved'" class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><i class="fa-solid fa-check me-1"></i> ผ่าน</span>
+                    <span *ngIf="file.status === 'pending'" class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2 py-1"><i class="fa-solid fa-clock me-1"></i> รอตรวจ</span>
+                    <span *ngIf="file.status === 'rejected'" class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2 py-1"><i class="fa-solid fa-xmark me-1"></i> ไม่ผ่าน</span>
+                  </td>
+                  <td class="pe-4 text-end py-3">
+                    <button class="btn btn-sm btn-light text-muted me-2 hover-text-primary tooltip-trigger shadow-sm" 
+                            title="ดูไฟล์" 
+                            (click)="openPreview(file)">
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger tooltip-trigger shadow-sm" 
+                            title="ลบไฟล์"
+                            (click)="deleteFile(file.id)">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Preview Modal (Custom Implementation) -->
+  <div class="custom-modal-backdrop transition-all" *ngIf="selectedPreviewFile" (click)="closePreview()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040;"></div>
+  
+  <div class="custom-modal transition-all" *ngIf="selectedPreviewFile" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050; width: 100%; max-width: 600px;">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+      
+      <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
+        <h5 class="fw-bold mb-0 text-dark text-truncate pe-3">
+          <i class="fa-regular fa-file-lines text-primary me-2"></i> {{ selectedPreviewFile.name }}
+        </h5>
+        <button class="btn-close shadow-none" (click)="closePreview()"></button>
+      </div>
+      
+      <div class="card-body p-0 bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+        <div class="text-center p-5">
+          <div class="display-1 text-muted opacity-25 mb-3">
+            <i *ngIf="selectedPreviewFile.name.includes('.pdf')" class="fa-solid fa-file-pdf"></i>
+            <i *ngIf="selectedPreviewFile.name.includes('.jpg')" class="fa-solid fa-image"></i>
+            <i *ngIf="selectedPreviewFile.name.includes('.docx')" class="fa-solid fa-file-word"></i>
+          </div>
+          <h5 class="text-muted fw-bold">พื้นที่แสดงผลตัวอย่างเอกสาร</h5>
+          <p class="small text-muted mb-0">ขนาดไฟล์: {{ selectedPreviewFile.size }} | อัปโหลดเมื่อ: {{ selectedPreviewFile.uploadDate }}</p>
+        </div>
+      </div>
+      
+      <div class="card-footer bg-white border-top p-3 d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-secondary px-4 fw-bold shadow-sm" (click)="closePreview()">ปิดหน้าต่าง</button>
+        <button class="btn btn-primary px-4 fw-bold shadow-sm">
+          <i class="fa-solid fa-download me-2"></i> ดาวน์โหลดไฟล์
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

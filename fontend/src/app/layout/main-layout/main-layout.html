@@ -1,0 +1,14 @@
+<div class="app-layout" [class.collapsed]="isCollapsed">
+  <app-sidebar [isCollapsed]="isCollapsed"></app-sidebar>
+
+  <main class="main-wrapper">
+    <app-header (toggleSidebarEvent)="toggleSidebar()"></app-header>
+
+    <section class="content-view p-4">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+
+  <!-- Global AI Chatbot -->
+  <app-ai-chat></app-ai-chat>
+</div>

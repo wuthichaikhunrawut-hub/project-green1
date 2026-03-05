@@ -1,0 +1,95 @@
+/* จัดหน้าจอให้เต็ม 100% ห้ามมี Scrollbar */
+.login-page {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #fff;
+}
+
+.h-100 { height: 100% !important; }
+
+/* --- ฝั่งซ้าย (Image) --- */
+.bg-image {
+  /* รูปตึก Green Architecture สวยๆ จาก Unsplash */
+  background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Overlay สีเขียวไล่ระดับแบบ Modern */
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(6, 78, 59, 0.85) 100%);
+  z-index: 1;
+}
+
+.content { z-index: 2; }
+
+/* Avatar Group (วงกลมรูปคนซ้อนๆ กัน) */
+.avatar {
+  width: 36px; height: 36px;
+  display: inline-block;
+  background-color: #cbd5e1;
+}
+
+/* --- ฝั่งขวา (Form) --- */
+.login-wrapper {
+  max-width: 480px;
+}
+
+/* ปรับ Input ให้ดูสะอาดและนุ่มนวล */
+.custom-input {
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc; /* พื้นหลังเทาจางๆ */
+  border-radius: 8px;
+  height: 58px; /* สูงขึ้นนิดนึงดูแพง */
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.custom-input:focus {
+  background-color: #fff;
+  border-color: #16a34a; /* สีเขียว */
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1); /* เงาเขียวจางๆ */
+}
+
+/* ปุ่ม Login */
+.btn-success {
+  background-color: #15803d; /* เขียวเข้มกว่าเดิมนิดนึง */
+  border: none;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover-effect:hover:not(:disabled) {
+  background-color: #14532d;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(21, 128, 61, 0.3);
+}
+
+.btn-success:disabled {
+  background-color: #86efac;
+  cursor: not-allowed;
+}
+
+/* --- Animations --- */
+.animate-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-up {
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,62 @@
+<div class="register-container">
+  <div class="register-card shadow-lg animate-in">
+    <div class="text-center mb-4">
+      <i class="fa-solid fa-leaf text-success display-6 mb-2"></i>
+      <h2 class="fw-bold">ลงทะเบียนองค์กรใหม่</h2>
+      <p class="text-muted">เริ่มต้นเส้นทางสู่ Green Office กับ Green Sync</p>
+    </div>
+
+    <form (ngSubmit)="onRegister()">
+      <div class="section-title">ข้อมูลหน่วยงาน / บริษัท</div>
+      <div class="row g-3 mb-4">
+        <div class="col-12">
+          <label class="form-label small fw-bold">ชื่อองค์กร</label>
+          <input type="text" class="form-control" [(ngModel)]="orgData.name" name="orgName" placeholder="บริษัท กรีนซิงค์ จำกัด" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">เลขประจำตัวผู้เสียภาษี</label>
+          <input type="text" class="form-control" [(ngModel)]="orgData.tax_id" name="taxId" placeholder="13 หลัก">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">ประเภทอุตสาหกรรม</label>
+          <select class="form-select" [(ngModel)]="orgData.industry_type" name="industry">
+            <option value="">เลือกประเภท...</option>
+            <option value="office">สำนักงาน</option>
+            <option value="factory">โรงงานอุตสาหกรรม</option>
+            <option value="education">สถานศึกษา</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title">ข้อมูลผู้ใช้งาน (Admin)</div>
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">ชื่อผู้ใช้งาน</label>
+          <input type="text" class="form-control" [(ngModel)]="userData.username" name="username" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">อีเมลติดต่อ</label>
+          <input type="email" class="form-control" [(ngModel)]="userData.email" name="email" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">รหัสผ่าน</label>
+          <input type="password" class="form-control" [(ngModel)]="userData.password" name="password" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small fw-bold">ยืนยันรหัสผ่านอีกครั้ง</label>
+          <input type="password" class="form-control" [(ngModel)]="userData.confirmPassword" name="confirmPass" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-3" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        สร้างบัญชีและเริ่มใช้งาน
+      </button>
+
+      <div class="text-center mt-4">
+        <span class="text-muted small">มีบัญชีอยู่แล้ว?</span>
+        <a routerLink="/login" class="text-success fw-bold text-decoration-none small ms-2">เข้าสู่ระบบที่นี่</a>
+      </div>
+    </form>
+  </div>
+</div>

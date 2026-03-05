@@ -1,0 +1,57 @@
+<!-- Floating Toggle Button -->
+<button class="chat-fab" (click)="toggleChat()" [class.open]="isOpen" title="GreenBot AI Assistant">
+  <i class="fa-solid" [ngClass]="isOpen ? 'fa-xmark' : 'fa-robot'"></i>
+  <span class="chat-fab-pulse" *ngIf="!isOpen"></span>
+</button>
+
+<!-- Chat Panel -->
+<div class="chat-panel" [class.open]="isOpen">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <div>
+        <p class="chat-title">GreenBot</p>
+        <p class="chat-subtitle">AI ผู้ช่วยด้านสิ่งแวดล้อม</p>
+      </div>
+    </div>
+    <button class="chat-clear-btn" (click)="clearChat()" title="ล้างการสนทนา">
+      <i class="fa-solid fa-rotate-left"></i>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" class="chat-message-wrapper" [ngClass]="msg.role">
+      <div class="chat-bubble" [ngClass]="msg.role">
+        <p>{{ msg.text }}</p>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="chat-message-wrapper bot">
+      <div class="chat-bubble bot loading-bubble">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="chat-input-area">
+    <textarea
+      class="chat-input"
+      rows="1"
+      [(ngModel)]="inputMessage"
+      (keydown)="onKeyEnter($event)"
+      placeholder="ถามเกี่ยวกับ Green Office หรือ Carbon..."
+      [disabled]="isLoading"
+    ></textarea>
+    <button class="chat-send-btn" (click)="sendMessage()" [disabled]="isLoading || !inputMessage.trim()">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,163 @@
+<div class="container-fluid p-4 animate-in">
+  <div class="mb-4">
+    <h2 class="h3 fw-bold text-primary mb-1">
+      <i class="fa-solid fa-wand-magic-sparkles me-2"></i> ระบบ AI ประมวลผลบิล (AI Scan)
+    </h2>
+    <p class="text-muted">อัปโหลดไฟล์บิลค่าไฟฟ้า หรือค่าน้ำ เพื่อให้ระบบดึงข้อมูลอัตโนมัติ</p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left: Upload Zone -->
+    <div class="col-lg-6">
+      <div class="card stat-card h-100 border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom p-4">
+          <h5 class="fw-bold mb-0 text-dark">
+            <span class="badge bg-primary rounded-circle me-2 px-2 py-1">1</span> 
+            อัปโหลดบิลค่าพลังงาน
+          </h5>
+        </div>
+        <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+
+          <div class="upload-zone border-2 border-dashed rounded-4 p-5 mb-4" [class.bg-light]="!previewUrl" [class.border-success]="previewUrl" (click)="fileInput.click()" style="cursor: pointer; transition: all 0.2s ease;">
+            <input type="file" #fileInput hidden (change)="onFileChange($event)" accept="image/*,application/pdf">
+
+            <div *ngIf="!previewUrl">
+              <i class="fa-solid fa-cloud-arrow-up display-1 text-primary opacity-50 mb-3"></i>
+              <h5 class="fw-bold text-dark mb-2">คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวางที่นี่</h5>
+              <p class="text-muted small mb-0">รองรับไฟล์ JPG, PNG, PDF ขนาดไม่เกิน 10MB</p>
+            </div>
+
+            <img *ngIf="previewUrl" [src]="previewUrl" class="img-fluid rounded-3 shadow-sm mx-auto d-block" style="max-height: 250px; object-fit: contain;">
+          </div>
+
+          <!-- Error Alert -->
+          <div *ngIf="errorMessage" class="alert alert-danger border-start border-danger border-4 text-start shadow-sm mb-4">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ errorMessage }}
+          </div>
+
+          <button *ngIf="previewUrl && !scanResult" (click)="processAi()" [disabled]="isProcessing"
+            class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">
+            <span *ngIf="isProcessing" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!isProcessing" class="fa-solid fa-microchip me-2"></i>
+            {{ isProcessing ? 'AI กำลังประมวลผลข้อมูล...' : 'เริ่มสแกนด้วย AI' }}
+          </button>
+
+          <button *ngIf="scanResult" (click)="reset()" class="btn btn-outline-secondary w-100 py-2 mt-2 fw-medium">
+            <i class="fa-solid fa-rotate-left me-2"></i> อัปโหลดบิลใบใหม่
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form & Result Panel -->
+    <div class="col-lg-6">
+      <div class="card stat-card h-100 border-0 shadow-sm bg-white">
+        <div class="card-header bg-white border-bottom p-4">
+          <h5 class="fw-bold mb-0 text-dark">
+            <span class="badge bg-primary rounded-circle me-2 px-2 py-1">2</span> 
+            ข้อมูลผลลัพธ์
+          </h5>
+        </div>
+        <div class="card-body p-4">
+
+          <!-- Scanning Animation -->
+          <div *ngIf="isProcessing" class="text-center py-5">
+            <div class="spinner-grow text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+            <h5 class="fw-bold text-primary">กำลังวิเคราะห์รูปภาพ...</h5>
+            <p class="text-muted small">ระบบกำลังใช้ AI ดึงข้อมูลที่มีประโยชน์จากเอกสารของคุณ</p>
+          </div>
+
+          <!-- Initial Empty State -->
+          <div *ngIf="!isProcessing && !scanResult && !previewUrl" class="text-center py-5 h-100 d-flex flex-column justify-content-center align-items-center opacity-50">
+            <i class="fa-brands fa-bots text-muted display-1 mb-3"></i>
+            <h5 class="text-muted fw-bold">ระบบพร้อมทำงาน</h5>
+            <p class="text-muted small mb-0">โปรดอัปโหลดไฟล์ในส่วนแรกเพื่อเริ่มการสแกน</p>
+          </div>
+
+          <!-- AI Result Snippet -->
+          <div *ngIf="scanResult && !isProcessing" class="mb-4 animate-in">
+            <div class="alert bg-light border-0 border-start border-4 shadow-sm mb-3"
+              [ngClass]="{
+                'border-success': scanResult.confidence >= 70,
+                'border-warning': scanResult.confidence >= 40 && scanResult.confidence < 70,
+                'border-danger': scanResult.confidence < 40
+              }">
+              <div class="d-flex align-items-center">
+                <i class="fa-solid fa-circle-check fs-4 me-3"
+                  [ngClass]="{
+                    'text-success': scanResult.confidence >= 70,
+                    'text-warning': scanResult.confidence >= 40 && scanResult.confidence < 70,
+                    'text-danger': scanResult.confidence < 40
+                  }"></i>
+                <div>
+                  <h6 class="fw-bold mb-1 text-dark">วิเคราะห์เสร็จสิ้น</h6>
+                  <p class="mb-0 text-muted small">
+                    ความมั่นใจของ AI: <strong [innerHtml]="scanResult.confidence + '%'"></strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div *ngIf="scanResult.rawText" class="bg-light p-3 rounded-3 small text-muted font-monospace overflow-hidden text-truncate shadow-sm border border-light">
+               {{ scanResult.rawText }}
+            </div>
+          </div>
+
+          <!-- The Data Form -->
+          <form #logForm="ngForm" (ngSubmit)="confirmSave()" [class.opacity-50]="isProcessing" [class.d-none]="!scanResult && !previewUrl" class="animate-in mt-4">
+            
+            <div class="row g-3 mb-3">
+              <div class="col-12">
+                <label class="form-label fw-bold text-dark">ประเภทกิจกรรม <span class="text-danger">*</span></label>
+                <select class="form-select" name="type" [(ngModel)]="formData.type" [disabled]="isProcessing" aria-label="Energy Type">
+                  <option value="" disabled selected>เลือกประเภทพลังงาน</option>
+                  <option value="Electricity">ไฟฟ้า (Electricity)</option>
+                  <option value="Water">น้ำประปา (Water)</option>
+                  <option value="Fuel">น้ำมันเชื้อเพลิง (Fuel)</option>
+                </select>
+              </div>
+
+              <div class="col-sm-6">
+                <label class="form-label fw-bold text-dark">ปริมาณที่ใช้ <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <input type="number" class="form-control text-primary fw-bold bg-white" name="amount" [(ngModel)]="formData.amount" [disabled]="isProcessing" placeholder="ระบุตัวเลข">
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                 <label class="form-label fw-bold text-dark">หน่วยปริมาตร <span class="text-danger">*</span></label>
+                 <select class="form-select bg-white" name="unit" [(ngModel)]="formData.unit" [disabled]="isProcessing">
+                    <option value="kWh">kWh (ไฟฟ้า)</option>
+                    <option value="หน่วย">หน่วย (น้ำประปา)</option>
+                    <option value="ลิตร">ลิตร (น้ำมัน)</option>
+                 </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold text-dark">ประจำรอบการจดแจ้ง <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-white" name="date" [(ngModel)]="formData.date" [disabled]="isProcessing" placeholder="เช่น ตุลาคม 2566">
+              </div>
+            </div>
+
+            <div class="alert alert-warning bg-warning bg-opacity-10 border-warning border-0 small text-dark mt-4 mb-4">
+              <i class="fa-solid fa-circle-info me-1 text-warning"></i>
+              {{ scanResult ? 'ข้อมูลบางส่วนอาจไม่ถูกต้อง 100% โปรดตรวจสอบกับบิลจริงเสมอ' : 'โปรดตรวจสอบความถูกต้องก่อนกดบันทึก' }}
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="button" (click)="reset()" class="btn btn-light px-4 fw-bold shadow-sm" [disabled]="isSaving || isProcessing">ล้างข้อมูล</button>
+              <button type="submit" class="btn btn-success flex-grow-1 fw-bold shadow-sm" [disabled]="isSaving || isProcessing || !formData.amount || !formData.date || !formData.type">
+                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!isSaving" class="fa-solid fa-floppy-disk me-2"></i>
+                {{ isSaving ? 'กำลังบันทึกข้อมูล...' : 'ยืนยันความถูกต้องและบันทึก' }}
+              </button>
+            </div>
+            
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

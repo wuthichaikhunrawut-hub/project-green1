@@ -1,0 +1,103 @@
+<div class="container-fluid p-4 animate-in">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1 text-primary">จัดการแพ็กเกจการใช้งาน</h2>
+      <p class="text-muted mb-0">กำหนดระดับบริการ ฟีเจอร์ และโควต้าสำหรับแต่ละแผน</p>
+    </div>
+    <button class="btn btn-primary shadow-sm rounded-pill px-4" (click)="openModal()">
+      <i class="fa-solid fa-plus me-2"></i> เพิ่มแพ็กเกจใหม่
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+
+  <div class="row g-4" *ngIf="!isLoading">
+    <div class="col-lg-4" *ngFor="let plan of plans">
+      <div class="card border-0 shadow-sm rounded-4 h-100" [ngClass]="{'opacity-50': !plan.is_active}">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="fw-bold mb-0">{{ plan.name }}</h5>
+            <span class="badge" [ngClass]="plan.is_active ? 'bg-success' : 'bg-secondary'">
+              {{ plan.is_active ? 'เปิดใช้' : 'ปิดใช้' }}
+            </span>
+          </div>
+          <p class="text-muted small">{{ plan.description }}</p>
+          <h3 class="fw-bold text-primary my-3">฿{{ plan.price_per_month | number }}<small class="text-muted fs-6 fw-normal">/เดือน</small></h3>
+          <ul class="list-unstyled small text-muted">
+            <li class="mb-1"><i class="fa-solid fa-users text-primary me-2"></i>สูงสุด {{ plan.max_users }} ผู้ใช้งาน</li>
+            <li class="mb-1"><i class="fa-solid fa-location-dot text-primary me-2"></i>สูงสุด {{ plan.max_locations }} สาขา</li>
+            <li class="mb-1" [ngClass]="{'text-success fw-semibold': plan.has_ai_scan, 'text-muted': !plan.has_ai_scan}">
+              <i class="fa-solid me-2" [ngClass]="plan.has_ai_scan ? 'fa-check text-success' : 'fa-xmark text-danger'"></i>AI สแกนบิล
+            </li>
+            <li class="mb-1" [ngClass]="{'text-success fw-semibold': plan.has_green_office, 'text-muted': !plan.has_green_office}">
+              <i class="fa-solid me-2" [ngClass]="plan.has_green_office ? 'fa-check text-success' : 'fa-xmark text-danger'"></i>Green Office Evaluation
+            </li>
+          </ul>
+          <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-sm btn-outline-primary flex-fill" (click)="openModal(plan)">
+              <i class="fa-solid fa-pen"></i> แก้ไข
+            </button>
+            <button class="btn btn-sm btn-outline-danger flex-fill" (click)="delete(plan.id)">
+              <i class="fa-solid fa-trash"></i> ลบ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="plans.length === 0" class="col-12 text-center py-5 text-muted">ยังไม่มีแพ็กเกจการใช้งาน</div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal d-block" tabindex="-1" *ngIf="selectedPlan" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold">{{ selectedPlan.id ? 'แก้ไขแพ็กเกจ' : 'สร้างแพ็กเกจใหม่' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-muted">ชื่อแพ็กเกจ</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPlan.name" placeholder="เช่น Basic, Pro, Enterprise">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-muted">คำอธิบาย</label>
+          <textarea class="form-control" rows="2" [(ngModel)]="selectedPlan.description"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-bold text-muted">ราคา (บาท/เดือน)</label>
+          <input type="number" class="form-control" [(ngModel)]="selectedPlan.price_per_month">
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label small fw-bold text-muted">ผู้ใช้สูงสุด</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedPlan.max_users">
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label small fw-bold text-muted">สาขาสูงสุด</label>
+            <input type="number" class="form-control" [(ngModel)]="selectedPlan.max_locations">
+          </div>
+        </div>
+        <div class="mb-2 form-check">
+          <input class="form-check-input" type="checkbox" id="aiScan" [(ngModel)]="selectedPlan.has_ai_scan">
+          <label class="form-check-label small fw-bold" for="aiScan">รองรับ AI สแกนบิล</label>
+        </div>
+        <div class="mb-2 form-check">
+          <input class="form-check-input" type="checkbox" id="greenOffice" [(ngModel)]="selectedPlan.has_green_office">
+          <label class="form-check-label small fw-bold" for="greenOffice">รองรับ Green Office Evaluation</label>
+        </div>
+        <div class="mb-4 form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="isActive" [(ngModel)]="selectedPlan.is_active">
+          <label class="form-check-label small fw-bold text-muted" for="isActive">เปิดให้เลือกใช้งานได้</label>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="btn btn-light me-md-2" (click)="closeModal()">ยกเลิก</button>
+          <button class="btn btn-primary px-4" (click)="save()" [disabled]="isSaving">
+            <i class="fa-solid fa-floppy-disk me-2"></i> บันทึก
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

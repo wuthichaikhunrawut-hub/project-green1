@@ -1,0 +1,176 @@
+<div id="dashboard-content" class="min-h-screen bg-mesh p-8 animate-in">
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 fade-in">
+    <div>
+      <h1 class="text-4xl font-extrabold text-gradient tracking-tight">Green Analytics</h1>
+      <p class="text-slate-400 mt-2 font-medium flex items-center gap-2">
+        <i class="fa-solid fa-calendar-day text-emerald-500"></i>
+        ข้อมูลสถานะ ณ {{ currentDate | thaiDate }}
+      </p>
+    </div>
+    <div class="mt-6 md:mt-0 flex gap-4">
+      <div class="relative group">
+        <button class="glass-card text-slate-700 px-6 py-3 rounded-2xl font-bold shadow-sm hover:bg-white transition-all flex items-center gap-2 border-slate-200">
+          <i class="fa-solid fa-file-export text-emerald-600"></i> ส่งออกข้อมูล
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-50"></i>
+        </button>
+        <!-- Dropdown placeholder -->
+        <div class="absolute right-0 mt-2 w-48 glass-card rounded-2xl p-2 hidden group-hover:block z-50">
+          <button (click)="exportPDF()" class="w-full text-left px-4 py-2 hover:bg-emerald-50 rounded-xl text-sm font-bold text-slate-700 transition-colors">
+            <i class="fa-solid fa-file-pdf text-rose-500 me-2"></i> PDF Report
+          </button>
+          <button class="w-full text-left px-4 py-2 hover:bg-emerald-50 rounded-xl text-sm font-bold text-slate-700 transition-colors">
+            <i class="fa-solid fa-file-excel text-emerald-600 me-2"></i> Excel (Coming Soon)
+          </button>
+        </div>
+      </div>
+      <button routerLink="/carbon/logs" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold shadow-xl shadow-emerald-200/50 transition-all hover:-translate-y-1 active:scale-95">
+        <i class="fa-solid fa-plus me-2"></i> เพิ่มข้อมูลใหม่
+      </button>
+    </div>
+  </div>
+
+  <!-- Perspective Switcher (For Admins) - Simple Toggle for now -->
+  <div class="mb-8 flex gap-2 p-1 glass-card w-fit rounded-2xl">
+    <button class="px-6 py-2 rounded-xl text-sm font-bold bg-white shadow-sm text-emerald-600">Executive View</button>
+    <button class="px-6 py-2 rounded-xl text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Operational View</button>
+  </div>
+
+  <!-- Stat Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 fade-in-up">
+    <!-- Main Carbon Card -->
+    <div class="p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl overflow-hidden relative stat-card-premium">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 blur-[60px] rounded-full"></div>
+      <div class="relative z-10">
+        <div class="flex justify-between items-start">
+          <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Carbon Footprint</p>
+          <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-xl border border-white/10">
+            <i class="fa-solid fa-cloud text-emerald-400"></i>
+          </div>
+        </div>
+        <div class="mt-6">
+          <h2 class="text-5xl font-black mb-1 tabular-nums">{{ carbonTotal | number:'1.2-2' }}</h2>
+          <p class="text-sm text-slate-400 font-medium tracking-tight">kgCO2e สะสมทั้งหมด</p>
+        </div>
+        <div class="mt-8 flex items-center gap-2">
+          <div class="bg-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1">
+            <i class="fa-solid fa-arrow-down"></i> 5.2%
+          </div>
+          <span class="text-slate-500 text-[10px] font-bold">VS LAST MONTH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Energy Card -->
+    <div class="glass-card p-8 rounded-[2.5rem] stat-card-premium">
+      <div class="flex justify-between items-start">
+        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Energy Usage</p>
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center border border-amber-100/50 shadow-inner">
+          <i class="fa-solid fa-bolt-lightning text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-6">
+        <h2 class="text-4xl font-black text-slate-800 tabular-nums">{{ energyUsage | number }} <span class="text-lg font-bold text-slate-300">kWh</span></h2>
+        <p class="text-sm text-slate-400 font-medium mt-1">การใช้ไฟฟ้าสะสม</p>
+      </div>
+      <div class="mt-8 flex items-center gap-2">
+        <span class="text-rose-500 text-xs font-black">↑ 2.1%</span>
+        <span class="text-slate-300 text-[10px] font-bold uppercase">Over target</span>
+      </div>
+    </div>
+
+    <!-- Green Office Score Card -->
+    <div class="glass-card p-8 rounded-[2.5rem] stat-card-premium">
+      <div class="flex justify-between items-start mb-6">
+        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Office Score</p>
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100/50 shadow-inner">
+          <i class="fa-solid fa-leaf text-xl"></i>
+        </div>
+      </div>
+      <div class="flex items-end justify-between mb-4">
+        <h2 class="text-4xl font-black text-emerald-600">{{ greenScore }}%</h2>
+        <span class="text-xs font-black bg-emerald-500 text-white px-3 py-1 rounded-lg shadow-lg shadow-emerald-200">GOLD</span>
+      </div>
+      <div class="h-3 bg-slate-100 rounded-full overflow-hidden p-[2px]">
+        <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full shadow-sm transition-all duration-1000" [style.width.%]="greenScore"></div>
+      </div>
+      <p class="text-[10px] text-slate-400 font-bold mt-4 tracking-wider">CERTIFICATION PROGRESS</p>
+    </div>
+
+    <!-- Tree Equivalent Card -->
+    <div class="glass-card p-8 rounded-[2.5rem] stat-card-premium">
+      <div class="flex justify-between items-start">
+        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Eco Impact</p>
+        <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100/50 shadow-inner">
+          <i class="fa-solid fa-tree text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-6">
+        <h2 class="text-4xl font-black text-slate-800 tabular-nums">{{ carbonTotal / 9 | number:'1.0-0' }} <span class="text-lg font-bold text-slate-300">ต้น</span></h2>
+        <p class="text-sm text-slate-400 font-medium mt-1">เทียบเท่าการปลูกต้นไม้</p>
+      </div>
+      <div class="mt-8">
+        <div class="flex -space-x-2">
+          <div class="w-6 h-6 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center text-[8px] font-bold text-emerald-600 text-center">🌍</div>
+          <div class="w-6 h-6 rounded-full border-2 border-white bg-sky-100 flex items-center justify-center text-[8px] font-bold text-sky-600">🌱</div>
+          <span class="ps-4 text-[10px] text-slate-400 font-bold self-center">CO2 OFFSET EFFORT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts & Activities Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 fade-in-up" style="animation-delay: 0.2s">
+    <!-- Chart Section -->
+    <div class="lg:col-span-2 glass-card p-10 rounded-[3rem]">
+      <div class="flex justify-between items-center mb-10">
+        <div>
+          <h5 class="text-2xl font-black text-slate-800 tracking-tight">Analytics Overview</h5>
+          <p class="text-sm text-slate-400 font-medium mt-1">
+            <span *ngIf="activeChartView === 'area'">📈 แนวโน้มการปล่อยก๊าซเรือนกระจกรายเดือน</span>
+            <span *ngIf="activeChartView === 'bar'">📊 เปรียบเทียบปริมาณ CO2 แยกตามหน้างาน</span>
+            <span *ngIf="activeChartView === 'pie'">🥧 สัดส่วนแหล่งกำเนิด CO2 ทั้งหมด</span>
+          </p>
+        </div>
+        
+        <div class="chart-toggle-group">
+          <button class="chart-toggle-btn" [class.active]="activeChartView === 'area'" (click)="switchChart('area')">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+          </button>
+          <button class="chart-toggle-btn" [class.active]="activeChartView === 'bar'" (click)="switchChart('bar')">
+            <i class="fa-solid fa-chart-column text-lg"></i>
+          </button>
+          <button class="chart-toggle-btn" [class.active]="activeChartView === 'pie'" (click)="switchChart('pie')">
+            <i class="fa-solid fa-chart-pie text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative bg-emerald-50/10 rounded-[2rem] p-4 border border-emerald-100/30">
+        <div id="apexMainChart" class="min-h-[350px]"></div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="glass-card p-10 rounded-[3rem]">
+      <h5 class="text-2xl font-black text-slate-800 tracking-tight mb-10 flex items-center gap-3">
+        <i class="fa-solid fa-bolt-lightning text-amber-400"></i> สรุปกิจกรรม
+      </h5>
+      
+      <div class="space-y-10 max-h-[450px] overflow-y-auto pr-4 custom-scroll">
+        <div *ngFor="let activity of recentActivities; let i = index" class="flex gap-6 items-start relative group">
+          <div class="absolute left-[9px] top-8 w-[2px] h-12 bg-slate-100 group-last:hidden"></div>
+          <div class="w-5 h-5 rounded-full mt-1.5 border-4 border-white shadow-md shrink-0 z-10 transition-transform group-hover:scale-125" [ngClass]="'bg-' + activity.type"></div>
+          <div>
+            <p class="text-md font-bold text-slate-700 leading-tight group-hover:text-emerald-600 transition-colors">{{ activity.text }}</p>
+            <p class="text-[10px] text-slate-400 mt-2 font-black uppercase tracking-widest opacity-60">{{ activity.time }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <button class="w-full mt-10 py-4 text-sm font-black text-white bg-slate-900 rounded-[1.5rem] hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-95">
+        ดูประวัติทั้งหมด
+      </button>
+    </div>
+  </div>
+</div>

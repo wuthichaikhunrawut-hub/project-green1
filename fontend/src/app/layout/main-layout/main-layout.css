@@ -1,0 +1,29 @@
+:root {
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 80px;
+  --primary-green: #10b981;
+  --dark-navy: #0f172a;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh; /* Fixed height for the entire app */
+  width: 100%;
+  overflow: hidden; /* Prevent body scroll */
+}
+
+/* --- MAIN WRAPPER --- */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  height: 100vh; /* Match layout height */
+  overflow: hidden; /* Hide overflow so content-view scrolls internally */
+}
+
+.content-view {
+  flex: 1;
+  overflow-y: auto; /* Independent scrolling for main content */
+  overflow-x: hidden;
+}

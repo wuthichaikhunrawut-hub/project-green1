@@ -1,0 +1,128 @@
+<aside class="sidebar shadow" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <div class="logo-box">
+      <i class="fa-solid fa-leaf text-success"></i>
+    </div>
+    <span class="brand-name">Green Sync <small>v1.0</small></span>
+  </div>
+
+  <nav class="nav-container">
+    <!-- Visible to ADMIN -->
+    <a *ngIf="hasRole(['ADMIN'])" routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-gauge-high"></i>
+      <span>ศูนย์ควบคุมหลัก</span>
+    </a>
+
+    <!-- Admin System Management -->
+    <ng-container *ngIf="hasRole(['ADMIN'])">
+      <div class="nav-label text-uppercase">การจัดการระบบ</div>
+      <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-users-gear"></i>
+        <span>จัดการผู้ใช้งาน</span>
+      </a>
+      <a routerLink="/admin/assessors" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-user-check"></i>
+        <span>ยืนยันผู้ตรวจประเมิน</span>
+      </a>
+      <a routerLink="/admin/criteria" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-list-check"></i>
+        <span>เกณฑ์ประเมิน Green Office</span>
+      </a>
+      <a routerLink="/admin/emission-factors" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-leaf"></i>
+        <span>ค่าสัมประสิทธิ์คาร์บอน</span>
+      </a>
+    </ng-container>
+
+    <!-- Admin Billing & Logs -->
+    <ng-container *ngIf="hasRole(['ADMIN'])">
+      <div class="nav-label text-uppercase">แพ็กเกจและการเงิน</div>
+      <a routerLink="/admin/subscriptions" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-tags"></i>
+        <span>จัดการแพ็กเกจ & โควต้า</span>
+      </a>
+      <a routerLink="/admin/invoices" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span>ประวัติการชำระเงิน</span>
+      </a>
+      <a routerLink="/admin/audit-logs" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>ประวัติการทำรายการ (Audit)</span>
+      </a>
+    </ng-container>
+
+    <!-- Visible to USER and EXECUTIVE -->
+    <a *ngIf="hasRole(['USER', 'EXECUTIVE'])" routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-chart-pie"></i>
+      <span>แดชบอร์ดสรุปผล</span>
+    </a>
+
+    <!-- Visible to USER and EXECUTIVE -->
+    <ng-container *ngIf="hasRole(['USER', 'EXECUTIVE'])">
+      <div class="nav-label text-uppercase">บันทึกก๊าซเรือนกระจก</div>
+      <a routerLink="/carbon/logs" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>บันทึกการใช้พลังงาน</span>
+      </a>
+
+      <a routerLink="/ai-scan" routerLinkActive="active" class="nav-item ai-feature">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI สแกนบิลอัตโนมัติ</span>
+      </a>
+    </ng-container>
+
+    <!-- Visible to USER -->
+    <ng-container *ngIf="hasRole(['USER'])">
+      <div class="nav-label text-uppercase">ประเมินสำนักงานสีเขียว</div>
+      <a routerLink="/green-office/form" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <span>แบบประเมินตนเอง</span>
+      </a>
+      <a routerLink="/green-office/evidence" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-file-arrow-up"></i>
+        <span>จัดการไฟล์หลักฐาน</span>
+      </a>
+    </ng-container>
+
+    <div class="nav-label text-uppercase">จัดการระดับองค์กร</div>
+    
+    <!-- Visible to ASSESSOR, ADMIN, and USER -->
+    <a *ngIf="hasRole(['ADMIN', 'ASSESSOR', 'USER'])" routerLink="/requests" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-certificate"></i>
+      <span>คำขอรับรององค์กร</span>
+    </a>
+    
+    <!-- Visible to everyone except Admin for cleaner view -->
+    <a *ngIf="hasRole(['USER', 'EXECUTIVE'])" routerLink="/org/profile" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-building"></i>
+      <span>ข้อมูลโปรไฟล์องค์กร</span>
+    </a>
+
+    <!-- Visible to ASSESSOR -->
+    <a *ngIf="hasRole(['ASSESSOR'])" routerLink="/assessor/profile" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>ข้อมูลโปรไฟล์ส่วนตัว</span>
+    </a>
+    
+    <!-- Visible to USER (who manages billing) -->
+    <a *ngIf="hasRole(['USER'])" routerLink="/subscription" routerLinkActive="active" class="nav-item">
+      <i class="fa-solid fa-box-archive"></i>
+      <span>แพ็กเกจการใช้งาน</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar">
+        {{ user?.username ? (user?.username?.charAt(0) | uppercase) : 'G' }}
+      </div>
+      <div class="user-detail">
+        <p class="u-name">{{ user?.username || 'Guest Logged In' }}</p>
+        <p class="u-org">{{ user?.organizationName || 'Visitor / Admin' }}</p>
+      </div>
+      <button class="btn-icon" (click)="authService.logout()" title="ออกจากระบบ">
+        <i class="fa-solid fa-power-off"></i>
+      </button>
+    </div>
+  </div>
+</aside>

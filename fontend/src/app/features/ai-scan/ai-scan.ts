@@ -1,0 +1,96 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { GeminiService, BillScanResult } from '../../services/gemini';
+
+@Component({
+  selector: 'app-ai-scan',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './ai-scan.html',
+  styleUrl: './ai-scan.css'
+})
+export class AiScanComponent {
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
+  isProcessing = false;
+  scanResult: BillScanResult | null = null;
+  errorMessage: string | null = null;
+
+  // Form Model
+  formData = {
+    type: 'Electricity', // Default
+    amount: null as number | null,
+    unit: 'kWh', // Default
+    date: ''
+  };
+
+  constructor(private geminiService: GeminiService) {}
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.scanResult = null;
+      this.errorMessage = null;
+      // Create image preview
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl = reader.result as string;
+      reader.readAsDataURL(file);
+    }
+  }
+
+  processAi() {
+    if (!this.selectedFile) return;
+    this.isProcessing = true;
+    this.errorMessage = null;
+
+    this.geminiService.uploadBill(this.selectedFile).subscribe({
+      next: (result: BillScanResult) => {
+        this.isProcessing = false;
+        this.scanResult = result;
+        
+        // Auto-fill form data from AI result
+        if (result) {
+          this.formData.type = result.type || this.formData.type;
+          this.formData.amount = result.amount || this.formData.amount;
+          this.formData.unit = result.unit || this.formData.unit;
+          this.formData.date = result.date || this.formData.date;
+        }
+      },
+      error: (err) => {
+        console.error('AI scan failed:', err);
+        this.isProcessing = false;
+        this.errorMessage = err?.error?.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
+      }
+    });
+  }
+
+  isSaving = false;
+
+  confirmSave() {
+    this.isSaving = true;
+    
+    // Simulate API call to save data into database
+    console.log('Saving Data:', this.formData);
+    setTimeout(() => {
+      this.isSaving = false;
+      alert('บันทึกข้อมูลเข้าสู่ระบบเรียบร้อย!');
+      this.reset();
+    }, 1500);
+  }
+
+  reset() {
+    this.selectedFile = null;
+    this.previewUrl = null;
+    this.scanResult = null;
+    this.errorMessage = null;
+    // Reset Form Data
+    this.formData = {
+      type: 'Electricity',
+      amount: null,
+      unit: 'kWh',
+      date: ''
+    };
+  }
+}

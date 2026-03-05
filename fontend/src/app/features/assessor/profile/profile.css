@@ -1,0 +1,22 @@
+/* Profile specific styles (Relies mainly on global styles.css) */
+
+.profile-avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-bg-app);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  font-weight: 700;
+  border: 4px solid #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-header-bg {
+  height: 120px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}

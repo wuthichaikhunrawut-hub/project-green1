@@ -1,0 +1,198 @@
+<div class="container-fluid p-4 animate-in">
+  <!-- Header -->
+  <div class="dashboard-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="dashboard-title h3 mb-1 text-primary">บันทึกกิจกรรมก๊าซเรือนกระจก</h2>
+      <p class="dashboard-subtitle mb-0">บันทึกข้อมูลการใช้พลังงานเพื่อประเมิน Carbon Footprint (Scope 1, 2)</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-success fw-bold px-4 shadow-sm" routerLink="/ai-scan">
+        <i class="fa-solid fa-wand-magic-sparkles me-2"></i> สแกนบิลด้วย AI
+      </button>
+      <button class="btn btn-success fw-bold px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#manualModal">
+        <i class="fa-solid fa-plus me-2"></i> เพิ่มข้อมูลด้วยมือ
+      </button>
+    </div>
+  </div>
+
+  <!-- Statistics Row -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card stat-card h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="stat-label">พลังงานไฟฟ้าเดือนนี้</div>
+              <div class="stat-value">1,245.0 <small class="fs-6 text-muted">kWh</small></div>
+            </div>
+            <div class="stat-icon-wrapper bg-warning bg-opacity-10 text-warning">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card stat-card h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="stat-label">ค่าน้ำประปาเดือนนี้</div>
+              <div class="stat-value">45.2 <small class="fs-6 text-muted">m³</small></div>
+            </div>
+            <div class="stat-icon-wrapper bg-info bg-opacity-10 text-info">
+              <i class="fa-solid fa-droplet"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card stat-card h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <div class="stat-label text-danger">총 การปล่อยก๊าซสะสม</div>
+              <div class="stat-value text-danger">512.8 <small class="fs-6 text-muted">kgCO2e</small></div>
+            </div>
+            <div class="stat-icon-wrapper bg-danger bg-opacity-10 text-danger">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Data Table -->
+  <div class="card border-0 shadow-sm p-0 mb-5">
+    <div class="card-header bg-white border-bottom p-4 d-flex justify-content-between align-items-center">
+      <h5 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-table-list text-primary me-2"></i> รายการบันทึกล่าสุด</h5>
+      <div class="d-flex gap-2">
+        <div class="input-group input-group-sm rounded-3 shadow-sm border" style="width: 250px;">
+          <span class="input-group-text bg-white border-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+          <input type="text" class="form-control border-0 ps-0" placeholder="ค้นหาบันทึก...">
+        </div>
+        <select class="form-select form-select-sm rounded-3 shadow-sm border w-auto fw-medium">
+          <option>ทุกไตรมาส</option>
+          <option>Q1 ปัจจุบัน</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col" class="ps-4">วันที่บันทึก</th>
+              <th scope="col">ประเภท</th>
+              <th scope="col" class="text-end">ปริมาณ</th>
+              <th scope="col">หน่วย</th>
+              <th scope="col" class="text-center">ปล่อยก๊าซ (kgCO2e)</th>
+              <th scope="col" class="text-center">แหล่งที่มา</th>
+              <th scope="col" class="text-end pe-4">จัดการ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logs">
+              <td class="ps-4 text-dark fw-medium">{{ log.date | date:'dd MMM yyyy' }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="fa-solid me-2 text-primary" 
+                    [ngClass]="{'fa-bolt': log.type === 'Electricity', 'fa-droplet text-info': log.type === 'Water', 'fa-gas-pump text-warning': log.type === 'Gasoline'}"></i>
+                  <span class="fw-bold">{{ log.type }}</span>
+                </div>
+              </td>
+              <td class="text-end fw-semibold">{{ log.amount | number }}</td>
+              <td><span class="badge bg-light text-muted border px-2 py-1 fw-normal">{{ log.unit }}</span></td>
+              <td class="text-center"><span class="text-danger fw-bold bg-danger bg-opacity-10 px-2 py-1 rounded-3">{{ log.emission | number:'1.2-2' }}</span></td>
+              <td class="text-center">
+                <span class="badge border py-1 px-3"
+                  [ngClass]="log.source === 'AI_OCR' ? 'bg-primary-subtle text-primary border-primary border-opacity-25' : 'bg-light text-secondary border-secondary'">
+                  <i class="fa-solid me-1" [ngClass]="log.source === 'AI_OCR' ? 'fa-robot' : 'fa-keyboard'"></i>
+                  {{ log.source }}
+                </span>
+              </td>
+              <td class="text-end pe-4">
+                <button class="btn btn-sm btn-light btn-icon me-1" title="ดูรายละเอียด"><i class="fa-solid fa-eye text-primary"></i></button>
+                <button class="btn btn-sm btn-light btn-icon" (click)="deleteLog(log.id)" title="ลบรายการ"><i class="fa-solid fa-trash text-danger"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Manual Entry Modal -->
+<div class="modal fade" id="manualModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="fw-bold mb-0"><i class="fa-solid fa-leaf text-success me-2"></i>เพิ่มข้อมูลคาร์บอนด้วยตนเอง</h5>
+        <button type="button" id="closeModalBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveLog()">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">ประเภทพลังงาน</label>
+            <select class="form-select rounded-3" [(ngModel)]="newEntry.activity_type" name="activityType" required>
+              <option value="" disabled selected>เลือกประเภทกิจกรรม</option>
+              <option value="Electricity">ไฟฟ้า (Electricity)</option>
+              <option value="Water">น้ำประปา (Water)</option>
+              <option value="Gasoline">น้ำมันเชื้อเพลิง (Gasoline)</option>
+            </select>
+          </div>
+          
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">ประจำเดือน</label>
+              <select class="form-select rounded-3" [(ngModel)]="newEntry.month" name="month">
+                <option [value]="1">มกราคม</option>
+                <option [value]="2">กุมภาพันธ์</option>
+                <option [value]="3">มีนาคม</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">ปี ค.ศ.</label>
+              <input type="number" class="form-control rounded-3" [(ngModel)]="newEntry.year" name="year" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label small fw-bold">ปริมาณการใช้งาน</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="newEntry.usage_amount" name="amount" placeholder="เช่น 1500" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 fw-bold py-2 rounded-3">
+            <i class="fa-solid fa-floppy-disk me-2"></i>บันทึกข้อมูล
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="aiModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 p-4 text-center">
+      <div class="mb-3">
+        <div class="ai-upload-zone p-5 border-2 border-dashed rounded-4" (click)="fileInput.click()">
+          <input type="file" #fileInput hidden (change)="onFileSelected($event)">
+          <i class="fa-solid fa-file-invoice text-success display-4 mb-3"></i>
+          <h5>คลิกเพื่ออัปโหลดบิลค่าพลังงาน</h5>
+          <p class="text-muted small">ระบบจะใช้ AI ดึงข้อมูลจากไฟล์ภาพหรือ PDF ให้อัตโนมัติ</p>
+        </div>
+      </div>
+      <div *ngIf="isScanning" class="py-3">
+        <div class="spinner-border text-success mb-2"></div>
+        <p class="mb-0 fw-bold">AI กำลังวิเคราะห์ข้อมูล...</p>
+      </div>
+    </div>
+  </div>
+</div>
