@@ -36,22 +36,22 @@
   background-color: #FFFFFF; 
 }
 
-.logo-box {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #0D9488, #14B8A6);
-  border-radius: 8px;
+.sidebar-logo {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 12px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.logo-box i {
-  color: #fff !important;
-  font-size: 1.1rem;
+.logo-img {
+  height: 32px;
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .logo-img {
+  height: 36px;
 }
 
 .brand-name {

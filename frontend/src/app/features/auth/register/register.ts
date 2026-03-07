@@ -20,7 +20,12 @@ export class RegisterComponent {
     name: '',
     tax_id: '',
     industry_type: '',
-    total_floor_area: 0
+    number_of_employees: 0,
+    total_floor_area: 0,
+    working_hours_per_year: 0,
+    base_year: new Date().getFullYear(),
+    target_reduction_percent: 0,
+    current_green_status: 'none'
   };
 
   // ข้อมูลสำหรับ Table users
@@ -31,7 +36,20 @@ export class RegisterComponent {
     confirmPassword: ''
   };
 
+  currentStep = 1;
   isLoading = false;
+
+  nextStep() {
+    if (this.currentStep < 2) {
+      this.currentStep++;
+    }
+  }
+
+  prevStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
 
   onRegister() {
     if (this.userData.password !== this.userData.confirmPassword) {

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OrgService } from '../../../core/services/org.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-org-profile',
@@ -10,34 +12,58 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   styleUrl: './profile.css'
 })
 export class OrgProfileComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private orgService = inject(OrgService);
+  private authService = inject(AuthService);
+
   orgForm!: FormGroup;
   isEditing = false;
   savedData: any;
-
-  constructor(private fb: FormBuilder) {}
+  orgId: number | null = null;
+  isLoading = true;
 
   ngOnInit() {
+    this.orgId = this.authService.getOrganizationId();
+    
     this.initForm();
+    
+    if (this.orgId) {
+      this.loadOrgData();
+    } else {
+      this.isLoading = false;
+      this.orgForm.disable();
+    }
   }
 
   initForm() {
     this.orgForm = this.fb.group({
-      name: ['บริษัท กรีนคอร์ปอเรชั่น จำกัด', [Validators.required, Validators.minLength(5)]],
-      taxId: ['0105559012345', [Validators.required, Validators.pattern('^[0-9]{13}$')]],
-      type: ['บริษัทจำกัด', Validators.required],
-      address: ['123 อาคารกรีนทาวเวอร์ ชั้น 15 ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพมหานคร 10400', Validators.required],
-      contactPerson: ['สมชาย รักโลก', Validators.required],
-      phone: ['02-123-4567', Validators.required],
-      email: ['contact@greencorp.co.th', [Validators.required, Validators.email]],
-      website: ['www.greencorp.co.th'],
-      numberOfEmployees: [50, [Validators.required, Validators.min(1)]],
-      totalFloorArea: [1200, [Validators.required, Validators.min(1)]],
-      workingHoursPerYear: [2080, [Validators.required, Validators.min(1)]],
-      baseYear: [2566, Validators.required],
-      targetReductionPercent: [5, [Validators.required, Validators.min(0), Validators.max(100)]]
+      name: ['', [Validators.required, Validators.minLength(5)]],
+      tax_id: ['', [Validators.required, Validators.pattern('^[0-9]{13}$')]],
+      industry_type: ['', Validators.required],
+      number_of_employees: [0, [Validators.required, Validators.min(0)]],
+      total_floor_area: [0, [Validators.required, Validators.min(0)]],
+      working_hours_per_year: [0, [Validators.required, Validators.min(0)]],
+      base_year: [new Date().getFullYear(), Validators.required],
+      target_reduction_percent: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      current_green_status: ['none', Validators.required]
     });
+  }
 
-    this.orgForm.disable(); // Initially disabled
+  loadOrgData() {
+    this.isLoading = true;
+    this.orgService.getOrganization(this.orgId!).subscribe({
+      next: (data) => {
+        this.savedData = data;
+        this.orgForm.patchValue(data);
+        this.orgForm.disable();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading org data:', err);
+        this.isLoading = false;
+        alert('ไม่สามารถดึงข้อมูลองค์กรได้');
+      }
+    });
   }
   
   toggleEdit() {
@@ -45,31 +71,35 @@ export class OrgProfileComponent implements OnInit {
     if (this.isEditing) {
       this.orgForm.enable();
     } else {
-      // Revert to original data if they cancel edit
       this.orgForm.patchValue(this.savedData);
       this.orgForm.disable();
     }
   }
   
   saveProfile() {
-    if (this.orgForm.valid) {
-      this.isEditing = false;
-      this.savedData = { ...this.orgForm.value };
-      this.orgForm.disable();
-      alert('บันทึกข้อมูลหน่วยงานเรียบร้อยแล้ว');
-    } else {
-      // Mark all as touched to show validation errors
-      Object.keys(this.orgForm.controls).forEach(key => {
-        this.orgForm.get(key)?.markAsTouched();
+    if (this.orgForm.valid && this.orgId) {
+      this.isLoading = true;
+      this.orgService.updateOrganization(this.orgId, this.orgForm.value).subscribe({
+        next: (updatedData) => {
+          this.savedData = updatedData;
+          this.orgForm.patchValue(updatedData);
+          this.isEditing = false;
+          this.orgForm.disable();
+          this.isLoading = false;
+          alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+        },
+        error: (err) => {
+          console.error('Error updating org:', err);
+          this.isLoading = false;
+          alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+        }
       });
+    } else {
+      this.orgForm.markAllAsTouched();
     }
   }
 
   onLogoUpload() {
-    // Mock clicking a hidden file input
-    const confirmUpload = confirm('คุณต้องการเลือกรูปภาพมาใช้เป็นโลโก้องค์กรใช่หรือไม่? (จำลอง)');
-    if (confirmUpload) {
-      alert('อัปโหลดและอัปเดตโลโก้เรียบร้อย');
-    }
+    alert('ระบบอัปโหลดโลโก้จะพร้อมใช้งานในเวอร์ชันถัดไป');
   }
 }

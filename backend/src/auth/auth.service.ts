@@ -21,9 +21,7 @@ export class AuthService {
 
     // 1. Create Organization
     const org = await this.orgService.create({
-      name: registerDto.orgData.name,
-      tax_id: registerDto.orgData.tax_id,
-      industry_type: registerDto.orgData.industry_type,
+      ...registerDto.orgData
     });
 
     // 2. Hash password

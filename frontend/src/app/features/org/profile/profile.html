@@ -57,117 +57,96 @@
     <div class="col-lg-8">
       <div class="card border-0 shadow-sm rounded-4 h-100">
         <div class="card-body p-5" [formGroup]="orgForm">
-          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4">ข้อมูลทั่วไป</h5>
-          
-          <div class="row g-4">
-            <div class="col-md-12">
-              <label class="form-label small fw-bold text-muted">ชื่อองค์กร / บริษัท</label>
-              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="name">
-              <div *ngIf="orgForm.get('name')?.invalid && orgForm.get('name')?.touched" class="text-danger small mt-1">
-                กรุณาระบุชื่อองค์กร (อย่างน้อย 5 ตัวอักษร)
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">กำลังโหลดข้อมูล...</p>
+          </div>
+
+          <div *ngIf="!isLoading">
+            <h5 class="fw-bold text-dark border-bottom pb-3 mb-4">ข้อมูลทั่วไป (General Information)</h5>
+            
+            <div class="row g-4">
+              <div class="col-md-12">
+                <label class="form-label small fw-bold text-muted">ชื่อองค์กร / บริษัท</label>
+                <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="name">
+                <div *ngIf="orgForm.get('name')?.invalid && orgForm.get('name')?.touched" class="text-danger small mt-1">
+                  กรุณาระบุชื่อองค์กร (อย่างน้อย 5 ตัวอักษร)
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-muted">เลขประจำตัวผู้เสียภาษี (13 หลัก)</label>
+                <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="tax_id">
+                <div *ngIf="orgForm.get('tax_id')?.invalid && orgForm.get('tax_id')?.touched" class="text-danger small mt-1">
+                  กรุณาระบุเลขประจำตัวผู้เสียภาษีให้ถูกต้อง
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label small fw-bold text-muted">ประเภทอุตสาหกรรม</label>
+                <select class="form-select bg-light-subtle border-0 py-2 custom-input" formControlName="industry_type">
+                  <option value="office">สำนักงาน (Office)</option>
+                  <option value="factory">โรงงานอุตสาหกรรม (Factory)</option>
+                  <option value="education">สถานศึกษา (Education)</option>
+                  <option value="healthcare">สถานพยาบาล (Healthcare)</option>
+                  <option value="other">อื่นๆ (Other)</option>
+                </select>
               </div>
             </div>
             
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">เลขประจำตัวผู้เสียภาษี (13 หลัก)</label>
-              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="taxId">
-              <div *ngIf="orgForm.get('taxId')?.invalid && orgForm.get('taxId')?.touched" class="text-danger small mt-1">
-                กรุณาระบุเลขประจำตัวผู้เสียภาษี 13 หลักให้ถูกต้อง
-              </div>
-            </div>
+            <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 mt-5">ข้อมูลสิ่งแวดล้อม (Environmental Data)</h5>
             
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">ประเภทองค์กร</label>
-              <select class="form-select bg-light-subtle border-0 py-2 custom-input" formControlName="type">
-                <option value="บริษัทจำกัด">บริษัทจำกัด</option>
-                <option value="หน่วยงานรัฐบาล">หน่วยงานรัฐบาล</option>
-                <option value="รัฐวิสาหกิจ">รัฐวิสาหกิจ</option>
-                <option value="องค์กรไม่แสวงหากำไร">องค์กรไม่แสวงหากำไร</option>
-              </select>
-              <div *ngIf="orgForm.get('type')?.invalid && orgForm.get('type')?.touched" class="text-danger small mt-1">
-                กรุณาเลือกประเภทองค์กร
+            <div class="row g-4">
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">จำนวนพนักงาน (คน)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control bg-light-subtle border-0 custom-input" formControlName="number_of_employees">
+                  <span class="input-group-text bg-light border-0 small">คน</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">พื้นที่ใช้สอยรวม (ตร.ม.)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control bg-light-subtle border-0 custom-input" formControlName="total_floor_area">
+                  <span class="input-group-text bg-light border-0 small">ตร.ม.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">ชั่วโมงทำงาน (ชั่วโมง/ปี)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control bg-light-subtle border-0 custom-input" formControlName="working_hours_per_year">
+                  <span class="input-group-text bg-light border-0 small">ชม.</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">ปีฐาน (Base Year)</label>
+                <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="base_year">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">เป้าหมายลดคาร์บอน (%)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control bg-light-subtle border-0 custom-input" formControlName="target_reduction_percent">
+                  <span class="input-group-text bg-light border-0 small">%</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted">สถานะ Green Office ปัจจุบัน</label>
+                <select class="form-select bg-light-subtle border-0 py-2 custom-input" formControlName="current_green_status">
+                  <option value="none">ยังไม่ได้เข้าร่วม</option>
+                  <option value="gold">ระดับเหรียญทอง (Gold)</option>
+                  <option value="silver">ระดับเหรียญเงิน (Silver)</option>
+                  <option value="bronze">ระดับเหรียญทองแดง (Bronze)</option>
+                </select>
               </div>
             </div>
-            
-            <div class="col-md-12">
-              <label class="form-label small fw-bold text-muted">ที่อยู่องค์กร</label>
-              <textarea class="form-control bg-light-subtle border-0 py-2 custom-input" rows="3" formControlName="address"></textarea>
-              <div *ngIf="orgForm.get('address')?.invalid && orgForm.get('address')?.touched" class="text-danger small mt-1">
-                กรุณาระบุที่อยู่องค์กร
-              </div>
-            </div>
-          </div>
-          
-          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 mt-5">ข้อมูลการติดต่อ</h5>
-          
-          <div class="row g-4">
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">ชื่อผู้ติดต่อหลัก</label>
-              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="contactPerson">
-              <div *ngIf="orgForm.get('contactPerson')?.invalid && orgForm.get('contactPerson')?.touched" class="text-danger small mt-1">
-                กรุณาระบุชื่อผู้ติดต่อหลัก
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">เบอร์โทรศัพท์</label>
-              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="phone">
-              <div *ngIf="orgForm.get('phone')?.invalid && orgForm.get('phone')?.touched" class="text-danger small mt-1">
-                กรุณาระบุเบอร์โทรศัพท์
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">อีเมล (Email)</label>
-              <input type="email" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="email">
-              <div *ngIf="orgForm.get('email')?.invalid && orgForm.get('email')?.touched" class="text-danger small mt-1">
-                กรุณาระบุอีเมลให้ถูกต้อง
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label small fw-bold text-muted">เว็บไซต์ (ถ้ามี)</label>
-              <input type="text" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="website">
-            </div>
-          </div>
-          
-          <h5 class="fw-bold text-dark border-bottom pb-3 mb-4 mt-5">ข้อมูลองค์กรด้านสิ่งแวดล้อม</h5>
-          
-          <div class="row g-4">
-            <div class="col-md-4">
-              <label class="form-label small fw-bold text-muted">จำนวนพนักงาน (คน)</label>
-              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="numberOfEmployees">
-              <div *ngIf="orgForm.get('numberOfEmployees')?.invalid && orgForm.get('numberOfEmployees')?.touched" class="text-danger small mt-1">
-                กรุณาระบุจำนวนพนักงาน
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-bold text-muted">พื้นที่ใช้สอยรวม (ตร.ม.)</label>
-              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="totalFloorArea">
-              <div *ngIf="orgForm.get('totalFloorArea')?.invalid && orgForm.get('totalFloorArea')?.touched" class="text-danger small mt-1">
-                กรุณาระบุพื้นที่ใช้สอย
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-bold text-muted">ชั่วโมงทำงาน (ชั่วโมง/ปี)</label>
-              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="workingHoursPerYear">
-              <div *ngIf="orgForm.get('workingHoursPerYear')?.invalid && orgForm.get('workingHoursPerYear')?.touched" class="text-danger small mt-1">
-                กรุณาระบุชั่วโมงทำงาน
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-bold text-muted">ปีฐานในการประเมิน (พ.ศ.)</label>
-              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="baseYear">
-              <div *ngIf="orgForm.get('baseYear')?.invalid && orgForm.get('baseYear')?.touched" class="text-danger small mt-1">
-                กรุณาระบุปีฐาน
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label small fw-bold text-muted">เป้าหมายลดคาร์บอน (%)</label>
-              <input type="number" class="form-control bg-light-subtle border-0 py-2 custom-input" formControlName="targetReductionPercent">
-              <div *ngIf="orgForm.get('targetReductionPercent')?.invalid && orgForm.get('targetReductionPercent')?.touched" class="text-danger small mt-1">
-                กรุณาระบุเป้าหมายการลดก๊าซเรือนกระจก
+
+            <div class="mt-5 p-4 bg-light rounded-4">
+              <div class="d-flex align-items-center text-muted small">
+                <i class="fa-solid fa-circle-info me-2 text-primary"></i>
+                <span>ข้อมูลเหล่านี้จะถูกนำไปใช้ในการคำนวณ Carbon Footprint และการประเมิน Green Office</span>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>

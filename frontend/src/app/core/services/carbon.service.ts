@@ -22,13 +22,13 @@ export class CarbonService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private getHeaders(): HttpHeaders {
+  private getHeaders(): { [header: string]: string } {
     let orgId = '';
     if (isPlatformBrowser(this.platformId)) {
       const org = JSON.parse(localStorage.getItem('currentOrg') || '{}');
-      orgId = org.id || '';
+      orgId = org.id ? org.id.toString() : '';
     }
-    return new HttpHeaders().set('x-org-id', orgId);
+    return { 'x-org-id': orgId };
   }
 
   // ดึงข้อมูลทั้งหมด

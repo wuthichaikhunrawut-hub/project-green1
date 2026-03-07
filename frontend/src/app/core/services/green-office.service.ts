@@ -12,13 +12,13 @@ export class GreenOfficeService {
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
+  private getHeaders(): { [header: string]: string } {
     let orgId = '';
     if (isPlatformBrowser(this.platformId)) {
       const org = JSON.parse(localStorage.getItem('currentOrg') || '{}');
-      orgId = org.id || '';
+      orgId = org.id ? org.id.toString() : '';
     }
-    return new HttpHeaders().set('x-org-id', orgId);
+    return { 'x-org-id': orgId };
   }
 
   // ดึงเกณฑ์ทั้งหมด

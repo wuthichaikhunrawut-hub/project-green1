@@ -1,9 +1,9 @@
 <aside class="sidebar shadow" [class.collapsed]="isCollapsed">
   <div class="sidebar-header">
-    <div class="logo-box">
-      <i class="fa-solid fa-leaf text-success"></i>
-    </div>
-    <span class="brand-name">Green Sync <small>v1.0</small></span>
+    <a routerLink="/" class="sidebar-logo">
+      <img src="assets/image/Logo.png" alt="GreenSync" class="logo-img">
+      <span class="brand-name" *ngIf="!isCollapsed">Green Sync <small>v1.0</small></span>
+    </a>
   </div>
 
   <nav class="nav-container">

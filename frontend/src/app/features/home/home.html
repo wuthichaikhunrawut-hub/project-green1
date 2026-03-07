@@ -1,165 +1,281 @@
-<!-- ================= NAVIGATION ================= -->
+<!-- --- NAVIGATION --- -->
 <nav class="main-nav">
-  <div class="container nav-wrapper">
-    <div class="logo">
-      <i class="fa-solid fa-leaf text-primary"></i>
-      Green Sync
-    </div>
+  <div class="nav-wrapper">
+    <a routerLink="/" class="logo">
+      <img src="assets/image/Logo.png" alt="GreenSync" style="height: 50px; width: auto; transform: scale(1.6); transform-origin: left center;">
+    </a>
     <ul class="nav-links">
-      <li><a routerLink="/" fragment="features">ความสามารถ</a></li>
-      <li><a routerLink="/" fragment="green-office">มาตรฐานสีเขียว</a></li>
+      <li><a routerLink="/" fragment="Green Office">สำนักงานสีเขียว</a></li>
+      <li><a routerLink="/" fragment="Carbon Footprint">คาร์บอนฟุตพริ้นท์</a></li>
+      <li><a routerLink="/" fragment="features">ฟีเจอร์หลัก</a></li>
+      <li><a routerLink="/" fragment="solutions">โซลูชัน</a></li>
       <li><a routerLink="/" fragment="impact">ผลลัพธ์</a></li>
     </ul>
-    <div class="btn-group">
-      <a routerLink="/login" class="btn-login">เข้าสู่ระบบ</a>
-      <a routerLink="/register/assessor" class="btn-outline-success mx-2">สำหรับผู้ตรวจประเมิน</a>
-      <a routerLink="/register" class="btn-register">ทดลองใช้ฟรี</a>
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn-nav-light">เข้าสู่ระบบ</a>
+      <a routerLink="/register" class="btn-nav-primary">เริ่มต้นใช้งาน</a>
     </div>
   </div>
 </nav>
 
-<!-- ================= HERO ================= -->
+<!-- --- BACKGROUND EFFECTS --- -->
+<div class="ambient-background">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- --- HERO SECTION --- -->
 <section class="hero">
-  <div class="container hero-wrapper">
-    <div class="hero-content animate-fade-up">
-      <div class="badge-new">
-        <i class="fa-solid fa-bolt text-warning"></i> ระบบ AI Scan อัจฉริยะพร้อมใช้งาน
-      </div>
-      <h1>
-        บริหารจัดการคาร์บอน <br />
-        <span>เพื่อธุรกิจอนาคต</span>
-      </h1>
-      <p>
-        แพลตฟอร์มกลางระดับองค์กรสำหรับการจัดทำความยั่งยืน, Carbon Footprint, และ Green Office 
-        ช่วยลดภาระงานเอกสารกว่า 70% วิเคราะห์และแสดงข้อมูลแบบ Real-time บน Dashboard
-      </p>
-      <div class="hero-actions">
-        <a routerLink="/register" class="btn-primary-lg">เริ่มต้นใช้งานฟรี</a>
-        <a routerLink="/register/assessor" class="btn-secondary-lg">ลงทะเบียนผู้ตรวจประเมิน</a>
-        <a routerLink="/contact" class="btn-secondary-lg">
-          <i class="fa-solid fa-play me-2"></i> ดูวิดีโอสาธิต
-        </a>
-      </div>
+  <div class="bg-mesh"></div>
+  <div class="hero-content animate-fade-up">
+    <div class="badge-premium">
+      <span class="badge-dot"></span> AI-Powered Enterprise Platform
     </div>
-    <div class="hero-graphic animate-fade-up delay-200">
-      <div class="dashboard-mockup">
-        <!-- Dashboard Illustration / Placeholder Image -->
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000" alt="Dashboard Preview" class="img-fluid" style="width: 100%; height: auto; display: block;">
-      </div>
+    <h1 class="hero-title">
+      {{ hero.titleTh }}<br>
+      <span class="text-slate-100 fw-medium d-block mt-2" style="font-size: 1.75rem; letter-spacing: -0.5px;">{{ hero.titleEn }}</span>
+    </h1>
+    <p class="hero-subtitle">{{ hero.subtitleTh }}</p>
+    <div class="hero-actions">
+      <a routerLink="/register" class="btn-premium-solid">
+        {{ hero.primaryCta }} <!--<i class="fa-solid fa-arrow-right ms-2"></i>-->
+      </a>
+      <a routerLink="/org/profile" class="btn-premium-glass">
+        ข้อมูลองค์กร
+      </a>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+
+<!-- --- TRUSTED BY --- -->
+<section class="partners-section pt-5">
+  <div class="container container-sm">
+    <p class="partners-title">ขับเคลื่อนความยั่งยืนให้กับองค์กรชั้นนำมากกว่า 500 แห่ง</p>
+    <div class="partners-flex">
+      <div class="partner-text-logo fs-4 text-emerald-600">GISTDA</div>
+      <div class="partner-text-logo fs-4 text-blue-600">TEI</div>
+      <div class="partner-text-logo fs-4 text-slate-800">AWS</div>
+      <div class="partner-text-logo fs-4 text-blue-500">UN Global Compact</div>
+      <div class="partner-text-logo fs-4 text-emerald-500">SET ESG</div>
     </div>
   </div>
 </section>
 
-<!-- ================= FEATURES ================= -->
-<section id="features" class="section section-soft">
+<!-- --- BENTO GRID CORE SOLUTIONS --- -->
+<section id="CoreSolutions" class="section-bento">
   <div class="container">
-    <div class="section-header animate-fade-up">
-      <span class="section-subtitle">ความสามารถหลักของเรา</span>
-      <h2 class="section-title">เปลี่ยนงานที่ซับซ้อนให้ตรวจสอบได้ง่ายขึ้น</h2>
-      <p class="text-muted">ลดความผิดพลาดในการกรอกข้อมูลและจัดเก็บเอกสารอย่างเป็นระบบด้วยระบบที่ออกแบบมาสำหรับแผนก HR และการบริหารอาคารโดยเฉพาะ</p>
+    <div class="section-header text-center animate-fade-up">
+      <div class="badge-premium mx-auto mb-3">
+        <span class="badge-dot"></span> Core Modules
+      </div>
+      <h2 class="display-3 fw-black mb-4">เชื่อมต่อทุกมิติความยั่งยืนไว้ในที่เดียว</h2>
+      <p class="lead text-slate-500 max-w-700 mx-auto">สถาปัตยกรรมระบบที่ออกแบบมาให้ทำงานประสานกันอย่างไร้รอยต่อ ตั้งแต่การจัดเก็บข้อมูลไปจนถึงการออกรายงานมาตรฐาน</p>
     </div>
 
-    <div class="grid-3">
-      <div class="feature-card animate-fade-up delay-100">
-        <div class="feature-icon">
-          <i class="fa-solid fa-robot"></i>
+    <div class="bento-grid mt-5 pt-4">
+      
+      <!-- BENTO 1: Green Office (Large Left) -->
+      <div id="Green Office" class="bento-item bento-feature-large animate-fade-up delay-100">
+        <div class="bento-content">
+          <div class="bento-icon bg-emerald-light text-emerald-600"><i class="fa-solid fa-leaf"></i></div>
+          <h3 class="bento-title">Smart Green Office</h3>
+          <p class="bento-desc">ยกระดับการจัดการสำนักงานสีเขียว ประเมินตนเองครบ 6 หมวด จัดเก็บเอกสารบน Cloud ประเมินความพร้อมด้วย AI โดยอัตโนมัติ</p>
+          <a routerLink="/register" class="bento-link">ดูรายละเอียดระบบ <i class="fa-solid fa-arrow-right"></i></a>
         </div>
-        <h4>AI Scan ดึงข้อมูลเอกสาร</h4>
-        <p>ไม่ต้องเสียเวลากรอกบิลค่าไฟค่าน้ำ ระบบ AI ของเราดึงข้อมูลและตัวเลขจากใบแจ้งหนี้เพื่อคำนวณคาร์บอนโดยอัตโนมัติ</p>
+        <div class="bento-image-wrapper">
+          <img src="assets/image/Green Office.png" alt="Green Office Platform" class="bento-img">
+        </div>
       </div>
 
-      <div class="feature-card animate-fade-up delay-200">
-        <div class="feature-icon">
-           <i class="fa-solid fa-chart-pie"></i>
+      <!-- BENTO 2: Carbon Footprint (Wide Top Right) -->
+      <div id="Carbon Footprint" class="bento-item bento-feature-wide animate-fade-up delay-200">
+        <div class="bento-content flex-row">
+          <div class="flex-grow-1">
+            <div class="bento-icon bg-blue-light text-blue-600"><i class="fa-solid fa-cloud"></i></div>
+            <h3 class="bento-title">Carbon Footprint CFO</h3>
+            <p class="bento-desc">รองรับ Scope 1-3 ตามมาตรฐาน อบก. เปลี่ยนบิลเป็นข้อมูลคาร์บอนด้วย AI Analytics ทันที</p>
+          </div>
+          <div class="bento-image-wrapper-mini">
+            <img src="assets/image/Carbon footprint.png" alt="Carbon Footprint Platform" class="bento-img-mini">
+          </div>
         </div>
-        <h4>Carbon Dashboard</h4>
-        <p>แสดงผลและวิเคราะห์ปริมาณคาร์บอนฟุตพริ้นท์ขององค์กรแบบ Real-time ดูแนวโน้มเปรียบเทียบในแต่ละเดือนได้ทันที</p>
       </div>
 
-      <div class="feature-card animate-fade-up delay-300">
-        <div class="feature-icon">
-          <i class="fa-solid fa-building-circle-check"></i>
+      <!-- BENTO 3: Enterprise AI (Bottom Right) -->
+      <div class="bento-item color-card-dark animate-fade-up delay-300">
+        <div class="bento-content">
+          <h3 class="bento-title text-white">99.9% AI Accuracy</h3>
+          <p class="bento-desc text-slate-300">ลดงานเหนื่อยล้าดึงข้อมูลบิลค่าน้ำค่าไฟ ระบบ OCR อัจฉริยะดึงข้อมูลและจำแนก Emission Factor ตรงจุด</p>
+          <div class="ai-pulse-graphic">
+             <div class="pulse-ring"></div>
+             <i class="fa-solid fa-microchip text-emerald-400 fs-1 position-relative z-1"></i>
+          </div>
         </div>
-        <h4>Green Office Assessment</h4>
-        <p>รองรับการประเมินมาตรฐานสำนักงานสีเขียว (Green Office) ตามเกณฑ์ประเทศไทย พร้อมระบบจัดเก็บหลักฐานบนคลาวด์</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- --- OVERLAPPING FEATURES (The Challenge & Solution) --- -->
+<section id="features" class="section-fluid-cards">
+  <div class="container position-relative">
+    <div class="fluid-background-shape"></div>
+    
+    <div class="row align-items-center mb-5 pb-4">
+      <div class="col-lg-5 animate-fade-up">
+        <h2 class="display-4 fw-black text-slate-900 leading-tight">บอกลากระบวนการเดิมๆ<br><span class="text-gradient">เปลี่ยนผ่านสู่ดิจิทัล</span>เต็มรูปแบบ</h2>
+      </div>
+      <div class="col-lg-6 offset-lg-1 animate-fade-up delay-100">
+        <p class="lead text-slate-600 m-0">หมดยุคทำงานซ้ำซ้อนบน Spreadsheet ค้นหาเอกสารไม่เจอ หรือปวดหัวกับเกณฑ์ประเมินที่เปลี่ยนใหม่ทุกปี ระบบของเราออกแบบมารองรับ Ecosystem การทำงานจริง</p>
+      </div>
+    </div>
+
+    <div class="fluid-cards-grid">
+      <div class="glass-feature-card animate-fade-up" *ngFor="let feat of features; let i = index" [class]="'delay-'+(i*100)">
+        <div class="card-glow" [class]="'glow-'+feat.color"></div>
+        <div class="icon-box" [class]="'text-'+feat.color+'-500'"><i class="fa-solid" [class]="feat.icon"></i></div>
+        <h4>{{ feat.titleTh }}</h4>
+        <p>{{ feat.descTh }}</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= STATS / IMPACT ================= -->
-<section id="impact" class="stats-section">
+
+<!-- --- DYNAMIC SCROLL: HOW IT WORKS --- -->
+<section class="section-dynamic-scroll bg-slate-900 text-white">
   <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item animate-fade-up">
-        <div class="stat-number">70%</div>
-        <div class="stat-label">ลดเวลาทำงานเอกสาร</div>
+    <div class="row gx-5">
+      <div class="col-lg-5 sticky-column">
+        <div class="sticky-content">
+          <div class="badge-premium badge-premium-dark mb-4">
+            <span class="badge-dot bg-emerald-400"></span> Workflow
+          </div>
+          <h2 class="display-3 fw-black text-white mb-4">ทำงานง่ายขึ้น<br>ใน 3 ขั้นตอน</h2>
+          <p class="text-slate-400 fs-5 mb-5">เราออกแบบประสบการณ์ผู้ใช้ (UX) ให้เรียบง่าย ผู้ดูแลระบบสามารถเริ่มต้นใช้งานได้ทันทีโดยไม่ต้องเรียนรู้ระบบนาน</p>
+          
+          <div class="step-nav">
+             <div class="step-nav-item active">
+               <div class="step-number">01</div>
+               <div class="step-text">นำเข้าข้อมูลและเอกสารอัตโนมัติ</div>
+             </div>
+             <div class="step-nav-item">
+               <div class="step-number">02</div>
+               <div class="step-text">AI ประมวลผลและวิเคราะห์หาค่า Carbon</div>
+             </div>
+             <div class="step-nav-item">
+               <div class="step-number">03</div>
+               <div class="step-text">ออกรายงานสรุปและหน้า Dashboard ทันที</div>
+             </div>
+          </div>
+        </div>
       </div>
-      <div class="stat-item animate-fade-up delay-100">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">ตรวจสอบข้อมูลย้อนหลังได้</div>
-      </div>
-      <div class="stat-item animate-fade-up delay-200">
-        <div class="stat-number">10x</div>
-        <div class="stat-label">การวิเคราะห์ที่แม่นยำขึ้น</div>
-      </div>
-      <div class="stat-item animate-fade-up delay-300">
-        <div class="stat-number">50+</div>
-        <div class="stat-label">องค์กรที่ใช้ระบบนี้</div>
+      <div class="col-lg-7 image-scroll-column">
+        <!-- We use one main image prominently but styled beautifully to look like an app window -->
+        <div class="app-window-mockup mt-5 animate-fade-up delay-200">
+           <div class="app-window-header">
+             <span class="dot bg-danger"></span>
+             <span class="dot bg-warning"></span>
+             <span class="dot bg-success"></span>
+           </div>
+           <img src="assets/image/How it work.png" alt="Platform Workflow" class="img-fluid w-100">
+           
+           <div class="floating-stat-card bottom-right animate-fade-up delay-400">
+             <div class="stat-value text-emerald-500">Auto Generated</div>
+             <div class="stat-label">ESG Reports Ready</div>
+           </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= CTA ================= -->
-<section class="cta">
+<!-- --- IMPACT METRICS --- -->
+<section id="impact" class="section-impact-minimal">
+  <div class="container text-center">
+    <div class="impact-minimal-grid animate-fade-up">
+      <div class="impact-item" *ngFor="let s of stats">
+        <div class="impact-number">{{ s.number }}</div>
+        <div class="impact-label">{{ s.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- --- CTA FULL WIDTH MESH --- -->
+<section class="cta-mesh-section">
   <div class="container">
-    <div class="cta-box animate-fade-up">
-      <h2>พร้อมยกระดับองค์กรสู่ความยั่งยืนหรือยัง?</h2>
-      <p>
-        เริ่มต้นเตรียมความพร้อมและพัฒนากระบวนการจัดการคาร์บอนองค์กรที่ทำงานได้จริง วันนี้
-      </p>
-      <a routerLink="/register" class="cta-btn">สร้างบัญชีสำหรับองค์กร (ฟรี)</a>
+    <div class="cta-floating-box animate-fade-up">
+      <div class="cta-content">
+        <h2>เข้าร่วมกับองค์กรชั้นนำที่เลือกใช้ <span class="text-emerald-400">GreenSync</span></h2>
+        <p>เริ่มต้นบนแพลตฟอร์มคลาวด์ที่ปลอดภัย ได้มาตรฐานสากล พร้อมเครื่องมือครบครันสำหรับบริหารจัดการความยั่งยืนในองค์กรของคุณ</p>
+        <div class="cta-buttons">
+          <a routerLink="/register" class="btn-white-solid">
+            เริ่มต้นใช้งานฟรี
+          </a>
+          <a href="#" class="btn-link-white">
+            ติดต่อนัดหมายสาธิตระบบ  <!--<i class="fa-solid fa-arrow-right fs-sm ms-1"></i>-->
+          </a>
+        </div>
+      </div>
+      
+      <!-- Decorative rings -->
+      <div class="ring r-1"></div>
+      <div class="ring r-2"></div>
     </div>
   </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="footer">
+<!-- --- FOOTER --- -->
+<footer class="footer-modern">
   <div class="container">
     <div class="footer-grid">
-      <div>
-        <div class="footer-brand">
-          <i class="fa-solid fa-leaf text-primary"></i> Green <span>Sync</span>
+      <div class="footer-brand-col">
+        <a routerLink="/" class="logo text-white fs-3 mb-3 d-inline-block">Green<span class="text-emerald-400">Sync</span></a>
+        <p class="text-slate-400 mb-4 pe-4">แพลตฟอร์ม AI ชั้นนำสำหรับการลดคาร์บอน และการปฏิบัติตามมาตรฐาน ESG ระดับองค์กร</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-line"></i></a>
         </div>
-        <p>
-          แพลตฟอร์มบริหารจัดการคาร์บอน, ESG และความยั่งยืนที่ออกแบบมาเพื่อธุรกิจไทย เชื่อถือได้ ปลอดภัยระดับองค์กร
-        </p>
       </div>
-
-      <div>
-        <h4>ระบบ</h4>
+      <div class="footer-links-col">
+        <h4>โซลูชัน</h4>
         <ul>
-          <li><a routerLink="/">หน้าแรก</a></li>
-          <li><a routerLink="/">ความสามารถ (Features)</a></li>
-          <li><a routerLink="/green-office">ระบบ Green Office</a></li>
-          <li><a routerLink="/carbon">การจัดการ Carbon</a></li>
-          <li><a routerLink="/register/assessor">ลงทะเบียนผู้ตรวจประเมิน</a></li>
+          <li><a href="#">Carbon Footprint (CFO)</a></li>
+          <li><a href="#">Green Office Standard</a></li>
+          <li><a href="#">AI Document OCR</a></li>
+          <li><a href="#">ESG Reporting</a></li>
         </ul>
       </div>
-
-      <div>
-        <h4>ติดต่อเรา</h4>
+      <div class="footer-links-col">
+        <h4>แหล่งข้อมูล</h4>
         <ul>
-          <li><a href="mailto:contact@greensync.co.th">contact@greensync.co.th</a></li>
-          <li><a href="#">ศูนย์ช่วยเหลือ</a></li>
-          <li>สำหรับพันธมิตรผู้ทำประเมิน</li>
+          <li><a href="#">กรณีศึกษาฐานลูกค้า</a></li>
+          <li><a href="#">ศูนย์ความรู้ (Blog)</a></li>
+          <li><a href="#">คู่มือการใช้งาน</a></li>
+          <li><a href="#">งานสัมมนา / กิจกรรม</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>บริษัท</h4>
+        <ul>
+          <li><a href="#">เกี่ยวกับเรา</a></li>
+          <li><a href="#">ความปลอดภัย (Security)</a></li>
+          <li><a href="#">นโยบายความเป็นส่วนตัว</a></li>
+          <li><a href="#">ติดต่อเรา</a></li>
         </ul>
       </div>
     </div>
-
     <div class="footer-bottom">
-      &copy; 2026 Green Sync Technology Co., Ltd. All rights reserved.
+      <p>&copy; 2026 GreenSync Technology. All rights reserved.</p>
+      <div class="footer-badges">
+        <span class="cert-badge"><i class="fa-solid fa-shield-halved text-emerald-500"></i> ISO 27001 Certified</span>
+      </div>
     </div>
   </div>
 </footer>

@@ -1,8 +1,20 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Org {
-  
+export class OrgService {
+  private apiUrl = 'http://localhost:3001/organizations';
+
+  constructor(private http: HttpClient) {}
+
+  getOrganization(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  updateOrganization(id: number, data: any): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, data);
+  }
 }

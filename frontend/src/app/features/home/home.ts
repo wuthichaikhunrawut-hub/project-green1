@@ -12,54 +12,83 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
 
   hero = {
-    title: 'แพลตฟอร์มบริหารจัดการคาร์บอน สำหรับองค์กรไทย',
-    subtitle: 'ลดความซับซ้อนในการจัดทำ Carbon Footprint, Green Office และ ESG ด้วยระบบ SaaS ที่ออกแบบมาเพื่อบริบทขององค์กรไทย',
-    primaryCta: 'เริ่มใช้งานระบบ',
-    secondaryCta: 'ติดต่อขอข้อมูล'
+    titleEn: 'Decarbonize Your Organization with AI',
+    titleTh: 'ยกระดับองค์กรสู่ Net Zero ด้วยพลัง AI',
+    subtitleEn: 'The enterprise-grade ESG and Carbon Footprint platform for modern organizations. Built for compliance, designed for impact.',
+    subtitleTh: 'แพลตฟอร์ม ESG และ Carbon Footprint ระดับ Enterprise สำหรับองค์กรยุคใหม่ ครบถ้วนตามมาตรฐาน สวยงาม และใช้งานง่ายที่สุด',
+    primaryCta: 'เริ่มต้นใช้งานฟรี',
+    secondaryCta: 'พอร์ทัลผู้ตรวจประเมิน'
   };
 
-  problems = [
-    'การจัดเก็บข้อมูลพลังงานและเอกสารยังแยกหลายระบบ',
-    'การคำนวณ Carbon Footprint ใช้เวลานานและเสี่ยงต่อความผิดพลาด',
-    'ขาดเครื่องมือที่สอดคล้องกับมาตรฐาน Green Office และ ESG ของไทย',
-    'การจัดทำรายงานเพื่อผู้บริหารและหน่วยงานกำกับดูแลทำได้ยาก'
-  ];
-
-  solutions = [
-    'รวมข้อมูลด้านพลังงานและสิ่งแวดล้อมไว้ในระบบเดียว',
-    'ใช้ AI ช่วยสแกนเอกสารและคำนวณคาร์บอนอัตโนมัติ',
-    'ออกแบบกระบวนการให้สอดคล้องกับมาตรฐานประเทศไทย',
-    'สร้างรายงานและ Dashboard ที่ผู้บริหารเข้าใจง่าย'
+  problemPoints = [
+    {
+      title: 'ข้อมูลกระจัดกระจาย',
+      desc: 'ข้อมูลพลังงานและเอกสารจัดเก็บแยกหลายระบบ ทำให้ยากต่อการรวบรวมและตรวจสอบ',
+      icon: 'fa-box-archive'
+    },
+    {
+      title: 'การคำนวณที่ล่าช้า',
+      desc: 'การใช้วิธีคำนวณแบบเดิมมีความซับซ้อน ใช้เวลานาน และเสี่ยงต่อความผิดพลาด',
+      icon: 'fa-calculator'
+    },
+    {
+      title: 'มาตรฐานที่ซับซ้อน',
+      desc: 'ข้อกำหนด Green Office และ ESG มีรายละเอียดมากและเปลี่ยนแปลงอยู่เสมอ',
+      icon: 'fa-file-shield'
+    }
   ];
 
   features = [
     {
-      icon: 'fa-robot',
-      title: 'AI Bill & Document Scan',
-      description: 'สแกนบิลค่าไฟ น้ำมัน และเอกสารพลังงานด้วย AI ลดงาน manual และเพิ่มความแม่นยำในการคำนวณ Carbon Footprint'
+      id: 'ai-ocr',
+      icon: 'fa-wand-magic-sparkles',
+      titleEn: 'AI Intelligence',
+      titleTh: 'ระบบ AI อัจฉริยะ',
+      descTh: 'สแกนเอกสารและบิลค่าพลังงานด้วย AI ความแม่นยำสูง ลดงาน Manual ได้มากกว่า 90%',
+      color: 'emerald'
     },
     {
-      icon: 'fa-chart-line',
-      title: 'Carbon Analytics Dashboard',
-      description: 'แดชบอร์ดวิเคราะห์การปล่อยก๊าซเรือนกระจกแบบ real-time พร้อมกราฟและรายงานเชิงผู้บริหาร'
+      id: 'analytics',
+      icon: 'fa-chart-pie',
+      titleEn: 'Real-time Analytics',
+      titleTh: 'วิเคราะห์ข้อมูล Real-time',
+      descTh: 'แดชบอร์ดสรุปผลการปล่อยก๊าซเรือนกระจกรายเดือน พร้อมระบบ AI แนะนำจุดที่ควรปรับปรุง',
+      color: 'blue'
     },
     {
-      icon: 'fa-building',
-      title: 'Green Office & ESG',
-      description: 'รองรับการประเมิน Green Office และการเตรียมข้อมูลด้าน ESG สำหรับองค์กรไทย'
+      id: 'reporting',
+      icon: 'fa-file-export',
+      titleEn: 'Smart Reporting',
+      titleTh: 'รายงานมาตรฐานสากล',
+      descTh: 'ส่งออกรายงานตามมาตรฐาน Green Office และ ESG ได้ทันทีเพียงคลิกเดียว',
+      color: 'indigo'
     },
     {
-      icon: 'fa-shield-halved',
-      title: 'Enterprise-grade Security',
-      description: 'รองรับหลายองค์กร (Multi-Organization) กำหนดสิทธิ์ผู้ใช้งาน และจัดการข้อมูลอย่างปลอดภัย'
+      id: 'multitenant',
+      icon: 'fa-users-gear',
+      titleEn: 'Enterprise Ready',
+      titleTh: 'พร้อมสำหรับทุกขนาดองค์กร',
+      descTh: 'รองรับการจัดการหลายหน่วยงาน (Multi-Org) พร้อมระบบจัดการสิทธิ์ที่ปลอดภัยและละเอียด',
+      color: 'slate'
     }
   ];
 
-  targetUsers = [
-    'หน่วยงานราชการและรัฐวิสาหกิจ',
-    'องค์กรเอกชนและบริษัทขนาดใหญ่',
-    'มหาวิทยาลัยและสถาบันการศึกษา',
-    'องค์กรที่ต้องเตรียมความพร้อมด้าน ESG'
+  howItWorks = [
+    { step: '01', title: 'การนำเข้าข้อมูล', desc: 'เชื่อมต่อข้อมูลหรืออัปโหลดบิลผ่านระบบ AI อัจฉริยะ' },
+    { step: '02', title: 'ประมวลผลด้วย AI', desc: 'ระบบคำนวณและวิเคราะห์ตามมาตรฐานสากลโดยอัตโนมัติ' },
+    { step: '03', title: 'สรุปผลและรายงาน', desc: 'ตรวจสอบผลลัพธ์ผ่านแดชบอร์ดและส่งออกรายงานได้ทันที' }
   ];
 
+  stats = [
+    { number: '500+', label: 'องค์กร', icon: 'fa-building' },
+    { number: '120k', label: 'กิโลกรัมคาร์บอนที่ลดได้', icon: 'fa-leaf' },
+    { number: '99.9%', label: 'ความแม่นยำ AI', icon: 'fa-microchip' },
+    { number: 'Premium', label: 'มาตรฐาน ESG', icon: 'fa-award' }
+  ];
+
+  partners = [
+    'https://upload.wikimedia.org/wikipedia/commons/e/e0/GISTDA_Logo.png',
+    'https://www.tei.or.th/greenoffice/images/logo-green-office.png',
+    'https://d1.awsstatic.com/logos/amazon-aws-logo.svg'
+  ];
 }

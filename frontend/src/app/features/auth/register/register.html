@@ -1,59 +1,140 @@
 <div class="register-container">
   <div class="register-card shadow-lg animate-in">
-    <div class="text-center mb-4">
-      <i class="fa-solid fa-leaf text-success display-6 mb-2"></i>
-      <h2 class="fw-bold">ลงทะเบียนองค์กรใหม่</h2>
-      <p class="text-muted">เริ่มต้นเส้นทางสู่ Green Office กับ Green Sync</p>
+    <div class="text-center mb-5">
+      <div class="brand-logo mb-3">
+        <img src="assets/image/Logo.png" alt="GreenSync" style="height: 50px; width: auto;">
+      </div>
+      <h2 class="fw-bold text-dark mb-1">ลงทะเบียนองค์กร</h2>
+      <p class="text-muted small">GreenSync Enterprise - แพลตฟอร์มจัดการคาร์บอนฟุตพริ้นท์</p>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-steps mb-5">
+      <div class="step" [class.active]="currentStep >= 1">
+        <div class="step-num">1</div>
+        <div class="step-label">ข้อมูลองค์กร</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" [class.active]="currentStep >= 2">
+        <div class="step-num">2</div>
+        <div class="step-label">บัญชีผู้ใช้งาน</div>
+      </div>
     </div>
 
     <form (ngSubmit)="onRegister()">
-      <div class="section-title">ข้อมูลหน่วยงาน / บริษัท</div>
-      <div class="row g-3 mb-4">
-        <div class="col-12">
-          <label class="form-label small fw-bold">ชื่อองค์กร</label>
-          <input type="text" class="form-control" [(ngModel)]="orgData.name" name="orgName" placeholder="บริษัท กรีนซิงค์ จำกัด" required>
+      <!-- Step 1: Organization Info -->
+      <div *ngIf="currentStep === 1" class="step-content">
+        <div class="row g-4">
+          <div class="col-12">
+            <label class="form-label">ชื่อองค์กร / หน่วยงาน</label>
+            <input type="text" class="form-control" [(ngModel)]="orgData.name" name="orgName" placeholder="ระบุชื่อเต็มขององค์กร" required>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">เลขประจำตัวผู้เสียภาษี</label>
+            <input type="text" class="form-control" [(ngModel)]="orgData.tax_id" name="taxId" placeholder="เลข 13 หลัก">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">ประเภทอุตสาหกรรม</label>
+            <select class="form-select" [(ngModel)]="orgData.industry_type" name="industry">
+              <option value="">เลือกประเภท...</option>
+              <option value="office">สำนักงาน (Office)</option>
+              <option value="factory">โรงงานอุตสาหกรรม (Factory)</option>
+              <option value="education">สถานศึกษา (Education)</option>
+              <option value="healthcare">สถานพยาบาล (Healthcare)</option>
+              <option value="other">อื่นๆ (Other)</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">จำนวนพนักงาน</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="orgData.number_of_employees" name="employees">
+              <span class="input-group-text">คน</span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">พื้นที่ใช้สอยรวม</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="orgData.total_floor_area" name="area">
+              <span class="input-group-text">ตร.ม.</span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">ชั่วโมงทำงาน/ปี</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="orgData.working_hours_per_year" name="hours">
+              <span class="input-group-text">ชม.</span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">ปีฐาน (Base Year)</label>
+            <input type="number" class="form-control" [(ngModel)]="orgData.base_year" name="baseYear">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">เป้าหมายการลด (%)</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="orgData.target_reduction_percent" name="target">
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">สถานะ Green Office ปัจจุบัน</label>
+            <select class="form-select" [(ngModel)]="orgData.current_green_status" name="greenStatus">
+              <option value="none">ยังไม่ได้เข้าร่วม</option>
+              <option value="gold">ระดับเหรียญทอง (Gold)</option>
+              <option value="silver">ระดับเหรียญเงิน (Silver)</option>
+              <option value="bronze">ระดับเหรียญทองแดง (Bronze)</option>
+            </select>
+          </div>
         </div>
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">เลขประจำตัวผู้เสียภาษี</label>
-          <input type="text" class="form-control" [(ngModel)]="orgData.tax_id" name="taxId" placeholder="13 หลัก">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">ประเภทอุตสาหกรรม</label>
-          <select class="form-select" [(ngModel)]="orgData.industry_type" name="industry">
-            <option value="">เลือกประเภท...</option>
-            <option value="office">สำนักงาน</option>
-            <option value="factory">โรงงานอุตสาหกรรม</option>
-            <option value="education">สถานศึกษา</option>
-          </select>
+
+        <div class="mt-5">
+          <button type="button" class="btn btn-success w-100 py-3 fw-bold" (click)="nextStep()">
+            ถัดไป: ข้อมูลบัญชี <i class="fa-solid fa-arrow-right ms-2"></i>
+          </button>
         </div>
       </div>
 
-      <div class="section-title">ข้อมูลผู้ใช้งาน (Admin)</div>
-      <div class="row g-3 mb-4">
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">ชื่อผู้ใช้งาน</label>
-          <input type="text" class="form-control" [(ngModel)]="userData.username" name="username" required>
+      <!-- Step 2: Admin Info -->
+      <div *ngIf="currentStep === 2" class="step-content">
+        <div class="row g-4 mb-4">
+          <div class="col-12">
+            <label class="form-label">ชื่อผู้ใช้งาน (Username)</label>
+            <input type="text" class="form-control" [(ngModel)]="userData.username" name="username" placeholder="สำหรับเข้าสู่ระบบ" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label">อีเมลติดต่อ (Business Email)</label>
+            <input type="email" class="form-control" [(ngModel)]="userData.email" name="email" placeholder="example@company.com" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">รหัสผ่าน</label>
+            <input type="password" class="form-control" [(ngModel)]="userData.password" name="password" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">ยืนยันรหัสผ่าน</label>
+            <input type="password" class="form-control" [(ngModel)]="userData.confirmPassword" name="confirmPass" required>
+          </div>
         </div>
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">อีเมลติดต่อ</label>
-          <input type="email" class="form-control" [(ngModel)]="userData.email" name="email" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">รหัสผ่าน</label>
-          <input type="password" class="form-control" [(ngModel)]="userData.password" name="password" required>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label small fw-bold">ยืนยันรหัสผ่านอีกครั้ง</label>
-          <input type="password" class="form-control" [(ngModel)]="userData.confirmPassword" name="confirmPass" required>
+
+        <div class="d-flex gap-3 mt-5">
+          <button type="button" class="btn btn-outline-secondary px-4 py-3 fw-bold" (click)="prevStep()">
+            <i class="fa-solid fa-arrow-left me-2"></i> ย้อนกลับ
+          </button>
+          <button type="submit" class="btn btn-success flex-grow-1 py-3 fw-bold" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+            สร้างบัญชีและเริ่มใช้งาน
+          </button>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-3" [disabled]="isLoading">
-        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-        สร้างบัญชีและเริ่มใช้งาน
-      </button>
-
-      <div class="text-center mt-4">
+      <div class="text-center mt-5">
         <span class="text-muted small">มีบัญชีอยู่แล้ว?</span>
         <a routerLink="/login" class="text-success fw-bold text-decoration-none small ms-2">เข้าสู่ระบบที่นี่</a>
       </div>

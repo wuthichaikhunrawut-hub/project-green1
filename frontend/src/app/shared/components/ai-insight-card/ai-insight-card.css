@@ -1,0 +1,12 @@
+.ai-insight-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 40px rgba(2, 6, 23, 0.06);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.30), 0 18px 60px rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.40);
+}

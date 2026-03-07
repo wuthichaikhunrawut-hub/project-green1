@@ -32,6 +32,9 @@ export class Organization {
   @Column({ type: 'float', default: 0 })
   target_reduction_percent: number;
 
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  current_green_status: string;
+
   @CreateDateColumn()
   created_at: Date;
 

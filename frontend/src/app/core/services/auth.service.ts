@@ -66,6 +66,14 @@ export class AuthService {
     return this.currentUserValue;
   }
 
+  getOrganizationId(): number | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const org = JSON.parse(localStorage.getItem('currentOrg') || '{}');
+      return org.org_id || org.id || null;
+    }
+    return null;
+  }
+
   private handleAuthResponse(response: AuthResponse) {
     if (response && response.access_token) {
       // Enrich user with organization name for sidebar display
