@@ -1,31 +1,37 @@
-<div class="container-fluid p-4 animate-in">
-  <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-end mb-4">
+<div class="min-h-screen bg-gray-50/70 px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- ── Page Header ── -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
     <div>
-      <h3 class="fw-bold mb-1 text-primary"><i class="fa-solid fa-clipboard-list me-2"></i> แบบประเมินตนเอง (Self-Assessment)</h3>
-      <p class="text-muted mb-0">ประเมินและติดตามความพร้อมขององค์กรตามมาตรฐาน Green Office ทั้ง 6 หมวด</p>
+      <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">แบบประเมินตนเอง (Self-Assessment)</h1>
+      <p class="mt-1 text-sm text-gray-500 max-w-xl">ประเมินความพร้อมขององค์กรตามมาตรฐาน Green Office ทั้ง 6 หมวด</p>
     </div>
-    
-    <div class="d-flex gap-2">
-      <button class="btn btn-outline-secondary py-2 px-4 shadow-sm fw-bold" (click)="saveProgress()">
-        <i class="fa-regular fa-floppy-disk me-2"></i> บันทึกร่าง
+    <div class="flex flex-wrap gap-2 shrink-0">
+      <button
+        class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 hover:-translate-y-0.5 transition-all"
+        (click)="saveProgress()">
+        <i class="fa-regular fa-floppy-disk mr-2 text-gray-500"></i> บันทึกร่าง
       </button>
-      <button class="btn btn-primary py-2 px-4 shadow-sm fw-bold" (click)="submitAssessment()">
-        <i class="fa-solid fa-paper-plane me-2"></i> ยืนยันส่งแบบประเมิน
+      <button
+        class="inline-flex items-center rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 hover:-translate-y-0.5 transition-all"
+        (click)="submitAssessment()">
+        <i class="fa-solid fa-paper-plane mr-2"></i> ส่งแบบประเมิน
       </button>
     </div>
   </div>
 
-  <div class="row g-4">
-    <!-- Left: Category List & Chart -->
-    <div class="col-lg-4 col-xl-3">
-      
+  <!-- ── Main Grid ── -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- ── LEFT PANEL ── -->
+    <div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-5">
+
       <!-- Radar Chart Card -->
-      <div class="card stat-card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
-        <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4 text-center">
-          <h6 class="fw-bold text-uppercase text-muted mb-0" style="letter-spacing: 0.5px; font-size: 0.8rem;">ภาพรวมความพร้อม</h6>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-4 pt-4 pb-2 border-b border-gray-50">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400">ภาพรวมความพร้อม</p>
         </div>
-        <div class="card-body p-4 d-flex justify-content-center" style="height: 250px;">
+        <div class="p-4 flex justify-center" style="height: 230px;">
           <canvas baseChart
             [data]="radarChartData"
             [options]="radarChartOptions"
@@ -34,97 +40,159 @@
         </div>
       </div>
 
-      <!-- Categories Card -->
-      <div class="card stat-card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
-        <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-          <h6 class="fw-bold text-uppercase text-muted mb-0" style="letter-spacing: 0.5px; font-size: 0.8rem;">หมวดการประเมิน</h6>
+      <!-- Category List Card -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-4 pt-4 pb-3 border-b border-gray-100">
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400">หมวดการประเมิน</p>
         </div>
-        
-        <div class="card-body p-3">
-          <div class="category-list d-flex flex-column gap-2">
-            <button *ngFor="let cat of categories" 
-                    class="category-item text-start border-0 w-100"
-                    [class.active]="activeCategory === cat.id"
-                    (click)="selectCategory(cat.id)">
-              
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="fw-bold text-truncate me-2 text-dark" style="font-size: 0.9rem;">{{ cat.title }}</span>
-                
-                <!-- Status Icons -->
-                <i *ngIf="cat.status === 'completed'" class="fa-solid fa-circle-check text-success ms-auto"></i>
-                <div *ngIf="cat.status === 'in-progress'" class="spinner-grow text-warning spinner-grow-sm ms-auto" role="status">
-                  <span class="visually-hidden">In Progress...</span>
-                </div>
-              </div>
-              
-              <!-- Progress Bar -->
-              <div class="progress" style="height: 6px; border-radius: 10px;">
-                <div class="progress-bar" 
-                     [class.bg-success]="cat.progress === 100"
-                     [class.bg-warning]="cat.progress > 0 && cat.progress < 100"
-                     [style.width.%]="cat.progress"></div>
-              </div>
-              <div class="text-end mt-1 text-muted fw-medium" style="font-size: 0.75rem;">{{ cat.progress }}%</div>
-            </button>
-          </div>
+        <div class="p-3 flex flex-col gap-1.5">
+          <button
+            *ngFor="let cat of categories"
+            class="w-full text-left px-3 py-3 rounded-lg border transition-all group"
+            [class.border-green-200]="activeCategory === cat.id"
+            [class.bg-green-50]="activeCategory === cat.id"
+            [class.border-transparent]="activeCategory !== cat.id"
+            [class.bg-transparent]="activeCategory !== cat.id"
+            [class.hover:bg-gray-50]="activeCategory !== cat.id"
+            (click)="selectCategory(cat.id)">
+
+            <!-- Category title + status icon -->
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-semibold leading-snug truncate"
+                    [class.text-green-700]="activeCategory === cat.id"
+                    [class.text-gray-700]="activeCategory !== cat.id">
+                {{ cat.title }}
+              </span>
+              <i *ngIf="cat.status === 'completed'" class="fa-solid fa-circle-check text-green-500 shrink-0 text-sm"></i>
+              <span *ngIf="cat.status === 'in-progress'" class="shrink-0 w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-500"
+                   [class.bg-green-500]="cat.progress === 100"
+                   [class.bg-yellow-400]="cat.progress > 0 && cat.progress < 100"
+                   [class.bg-gray-200]="cat.progress === 0"
+                   [style.width.%]="cat.progress"></div>
+            </div>
+            <div class="flex justify-end mt-1">
+              <span class="text-[10px] font-bold"
+                    [class.text-green-600]="cat.progress === 100"
+                    [class.text-yellow-600]="cat.progress > 0 && cat.progress < 100"
+                    [class.text-gray-400]="cat.progress === 0">
+                {{ cat.progress }}%
+              </span>
+            </div>
+          </button>
         </div>
       </div>
+
     </div>
 
-    <!-- Right: Question Form -->
-    <div class="col-lg-8 col-xl-9">
-      <div class="card stat-card border-0 shadow-sm rounded-4 min-vh-50 d-flex flex-column">
-        <div class="card-header bg-white border-bottom p-4">
-          <h5 class="fw-bold mb-0 text-primary">
-            <i class="fa-solid fa-list-check me-2"></i> 
-            {{ activeCategoryTitle }}
-          </h5>
+    <!-- ── RIGHT PANEL ── -->
+    <div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-5">
+
+      <!-- Category header card -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-6 py-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-list-check text-green-600"></i>
         </div>
-        
-        <div class="card-body p-4 flex-grow-1">
-          <div class="question-list">
-            
-            <div *ngFor="let q of questions; let i = index" class="question-card p-4 mb-4 border-0 rounded-4 shadow-sm bg-light">
-              <div class="d-flex gap-3">
-                <div class="question-number border border-2 border-primary bg-white text-primary fw-bold rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px; font-size: 1.2rem;">
-                  {{ q.id }}
-                </div>
-                
-                <div class="flex-grow-1">
-                  <p class="mb-3 fw-bold text-dark fs-6">{{ q.text }}</p>
-                  
-                  <div class="d-flex flex-wrap gap-3">
-                    <label class="custom-radio">
-                      <input type="radio" [name]="'q_'+q.id" value="yes" (change)="answerQuestion(q, 'yes')" [checked]="q.answer === 'yes'">
-                      <span class="radio-box border border-2 rounded-3 px-4 py-2 bg-white cursor-pointer fw-semibold text-muted transition-all">
-                        <i class="fa-solid fa-check me-2"></i> มีการดำเนินการ
-                      </span>
-                    </label>
-                    
-                    <label class="custom-radio">
-                      <input type="radio" [name]="'q_'+q.id" value="no" (change)="answerQuestion(q, 'no')" [checked]="q.answer === 'no'">
-                      <span class="radio-box border border-2 rounded-3 px-4 py-2 bg-white cursor-pointer fw-semibold text-muted transition-all">
-                        <i class="fa-solid fa-xmark me-2"></i> ยังไม่มีการดำเนินการ
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-        
-        <div class="card-footer bg-light border-top p-4 d-flex justify-content-between mt-auto">
-          <button class="btn btn-outline-secondary px-4 fw-bold shadow-sm" [disabled]="activeCategory === 1" (click)="selectCategory(activeCategory - 1)">
-            <i class="fa-solid fa-arrow-left me-2"></i> หมวดหมู่ก่อนหน้า
-          </button>
-          <button class="btn btn-primary px-4 fw-bold shadow-sm" [disabled]="activeCategory === categories.length" (click)="selectCategory(activeCategory + 1)">
-            หมวดหมู่ถัดไป <i class="fa-solid fa-arrow-right ms-2"></i>
-          </button>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-0.5">กำลังประเมิน</p>
+          <h2 class="text-base font-extrabold text-gray-900 leading-snug">{{ activeCategoryTitle }}</h2>
         </div>
       </div>
+
+      <!-- Question Cards -->
+      <div class="flex flex-col gap-4">
+        <div
+          *ngFor="let q of questions; let i = index"
+          class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 transition-all hover:shadow-md">
+
+          <div class="flex gap-4">
+            <!-- Question badge -->
+            <div class="shrink-0 w-10 h-10 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center">
+              <span class="text-xs font-black text-green-700">{{ q.id }}</span>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <!-- Question text -->
+              <p class="text-sm font-semibold text-gray-800 leading-relaxed mb-4">{{ q.text }}</p>
+
+              <!-- Answer options -->
+              <div class="flex flex-wrap gap-3">
+
+                <!-- YES option -->
+                <label class="cursor-pointer">
+                  <input type="radio" [name]="'q_'+q.id" value="yes" (change)="answerQuestion(q, 'yes')" [checked]="q.answer === 'yes'" class="sr-only">
+                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 text-sm font-semibold transition-all select-none"
+                        [class.border-green-500]="q.answer === 'yes'"
+                        [class.bg-green-50]="q.answer === 'yes'"
+                        [class.text-green-700]="q.answer === 'yes'"
+                        [class.border-gray-200]="q.answer !== 'yes'"
+                        [class.bg-white]="q.answer !== 'yes'"
+                        [class.text-gray-500]="q.answer !== 'yes'"
+                        [class.hover:border-green-300]="q.answer !== 'yes'">
+                    <i class="fa-solid fa-check text-xs"
+                       [class.text-green-600]="q.answer === 'yes'"
+                       [class.text-gray-400]="q.answer !== 'yes'"></i>
+                    มีการดำเนินการ
+                  </span>
+                </label>
+
+                <!-- NO option -->
+                <label class="cursor-pointer">
+                  <input type="radio" [name]="'q_'+q.id" value="no" (change)="answerQuestion(q, 'no')" [checked]="q.answer === 'no'" class="sr-only">
+                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 text-sm font-semibold transition-all select-none"
+                        [class.border-red-400]="q.answer === 'no'"
+                        [class.bg-red-50]="q.answer === 'no'"
+                        [class.text-red-600]="q.answer === 'no'"
+                        [class.border-gray-200]="q.answer !== 'no'"
+                        [class.bg-white]="q.answer !== 'no'"
+                        [class.text-gray-500]="q.answer !== 'no'"
+                        [class.hover:border-red-200]="q.answer !== 'no'">
+                    <i class="fa-solid fa-xmark text-xs"
+                       [class.text-red-500]="q.answer === 'no'"
+                       [class.text-gray-400]="q.answer !== 'no'"></i>
+                    ยังไม่มีการดำเนินการ
+                  </span>
+                </label>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-6 py-4 flex items-center justify-between">
+        <button
+          class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          [disabled]="activeCategory === 1"
+          (click)="selectCategory(activeCategory - 1)">
+          <i class="fa-solid fa-arrow-left mr-2 text-gray-400"></i> หมวดหมู่ก่อนหน้า
+        </button>
+
+        <!-- Progress indicator -->
+        <div class="hidden sm:flex items-center gap-1.5">
+          <span
+            *ngFor="let cat of categories"
+            class="w-2 h-2 rounded-full transition-all"
+            [class.bg-green-500]="cat.status === 'completed'"
+            [class.bg-green-300]="activeCategory === cat.id && cat.status !== 'completed'"
+            [class.bg-gray-200]="activeCategory !== cat.id && cat.status !== 'completed'"
+            [title]="cat.title">
+          </span>
+        </div>
+
+        <button
+          class="inline-flex items-center rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          [disabled]="activeCategory === categories.length"
+          (click)="selectCategory(activeCategory + 1)">
+          หมวดหมู่ถัดไป <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+
     </div>
-    
   </div>
 </div>

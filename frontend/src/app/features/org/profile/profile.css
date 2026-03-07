@@ -12,6 +12,8 @@
 
 /* Custom Inputs */
 .custom-input {
+  box-shadow: none !important;
+  font-size: 0.95rem;
   transition: all 0.2s ease;
   color: #334155;
   font-weight: 500;
@@ -27,6 +29,18 @@
   background-color: #f1f5f9 !important;
   color: #64748b;
   cursor: not-allowed;
+}
+
+.org-logo-wrapper {
+  transition: transform 0.2s ease-in-out;
+}
+
+.org-logo-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.org-logo i {
+  color: var(--color-primary);
 }
 
 /* Animations */
